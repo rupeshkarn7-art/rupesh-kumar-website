@@ -17,7 +17,7 @@ export const siteConfig = {
   email: "rupeshkarn7@gmail.com",
   location: "India",
   socials: {
-    linkedin: "https://www.linkedin.com/in/rupesh-kumar-56500b13b/",
+    linkedin: "https://www.linkedin.com/in/rupeshkumar-tech/",
     github: "https://github.com/rupeshkarn7-art",
     // Add your channel URL here (or via NEXT_PUBLIC_YOUTUBE_URL) when it is live.
     youtube: process.env.NEXT_PUBLIC_YOUTUBE_URL || "",
