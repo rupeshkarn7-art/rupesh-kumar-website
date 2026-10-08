@@ -27,7 +27,7 @@ export function Markdown({ children, className }: { children: string; className?
             // eslint-disable-next-line @next/next/no-img-element
             <img src={typeof src === "string" ? src : ""} alt={alt ?? ""} loading="lazy" decoding="async" />,
           table: ({ children }) => (
-            <div className="overflow-x-auto">
+            <div className="table-wrap" role="region" aria-label="Scrollable table" tabIndex={0}>
               <table>{children}</table>
             </div>
           ),

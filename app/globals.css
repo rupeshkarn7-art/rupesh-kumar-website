@@ -119,8 +119,31 @@
 .prose-article pre code {
   @apply bg-transparent p-0 text-[#e6e9ef];
 }
-.prose-article table {
-  @apply text-[0.95rem];
+/* Data tables: framed, horizontally scrollable, compact, sticky first column */
+.prose-article .table-wrap {
+  @apply my-8 overflow-x-auto rounded-xl border border-line bg-surface;
+  overscroll-behavior-x: contain;
+}
+.prose-article .table-wrap table {
+  @apply my-0 w-full text-[0.84rem] leading-snug;
+}
+.prose-article .table-wrap th,
+.prose-article .table-wrap td {
+  @apply min-w-[7.5rem] border-b border-line px-3 py-2.5 align-top;
+}
+.prose-article .table-wrap thead th {
+  @apply bg-paper-2 text-[0.78rem] font-semibold text-ink;
+}
+.prose-article .table-wrap tbody tr:last-child td {
+  @apply border-b-0;
+}
+.prose-article .table-wrap th:first-child,
+.prose-article .table-wrap td:first-child {
+  @apply sticky left-0 z-[1] min-w-[8rem] bg-surface;
+  box-shadow: 1px 0 0 var(--color-line);
+}
+.prose-article .table-wrap thead th:first-child {
+  @apply bg-paper-2;
 }
 
 /* Minimal syntax highlighting (highlight.js classes) */
