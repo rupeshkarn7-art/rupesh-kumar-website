@@ -78,7 +78,7 @@ export const seedProjects: Project[] = [
     ],
     cover_image: null,
     screenshots: [],
-    github_url: null,
+    github_url: "https://github.com/rupeshkarn7-art/travel-os",
     demo_url: "https://rupesh-kumar-website.vercel.app/travel-os",
     demo_video_url: null,
     overview:
