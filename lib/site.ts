@@ -8,10 +8,15 @@ export const siteConfig = {
   title: "Rupesh Kumar — Technology Transformation, Project Management & AI",
   description:
     "Rupesh Kumar is a technology transformation and project management professional (MBA, IIM Lucknow) working across enterprise infrastructure, network transformation, AIOps and technology strategy — and mentoring professionals building technology careers.",
-  // Set NEXT_PUBLIC_SITE_URL once you have a custom domain. On Vercel the production URL is used automatically.
+  // Canonical address used for links, sitemap, Open Graph and structured data.
+  // Production uses the custom domain; previews and local dev use their own URL. NEXT_PUBLIC_SITE_URL overrides all.
   url: (
     process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000")
+    (process.env.VERCEL_ENV === "production"
+      ? "https://rupeshkumar7.com"
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "http://localhost:3000")
   ).replace(/\/$/, ""),
   locale: "en_IN",
   email: "rupeshkarn7@gmail.com",

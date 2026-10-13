@@ -79,7 +79,7 @@ export const seedProjects: Project[] = [
     cover_image: null,
     screenshots: [],
     github_url: "https://github.com/rupeshkarn7-art/travel-os",
-    demo_url: "https://rupesh-kumar-website.vercel.app/travel-os",
+    demo_url: "https://rupeshkumar7.com/travel-os",
     demo_video_url: null,
     overview:
       "Planning a trip usually means juggling a dozen tabs and apps: one for inspiration, one for visa and permit rules, a spreadsheet for the budget, a notes app for packing. Travel OS puts the whole journey in one place — from choosing a destination to the checklist the night before you leave.\n\n**Try it:** the web version runs in any browser on phone, tablet or laptop. On a phone, use *Add to Home Screen* to open it like an app.",

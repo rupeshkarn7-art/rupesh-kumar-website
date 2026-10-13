@@ -16,16 +16,16 @@ Personal brand, portfolio, knowledge hub and consulting/mentoring site.
    | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | your Supabase publishable key (Supabase → Project Settings → API Keys) |
    | `ADMIN_EMAIL` | `rupeshkarn7@gmail.com` |
 
-3. Click **Deploy**. You'll get a URL like `https://rupesh-kumar-website.vercel.app`.
+3. Click **Deploy**. The site is live at **https://rupeshkumar7.com** (also reachable at `https://rupesh-kumar-website.vercel.app`).
 4. **Supabase** → project *rupesh-kumar-website* → **Authentication → URL Configuration**:
-   - *Site URL*: your Vercel URL (e.g. `https://rupesh-kumar-website.vercel.app`)
-   - *Redirect URLs*: add `https://rupesh-kumar-website.vercel.app/**`
+   - *Site URL*: `https://rupeshkumar7.com`
+   - *Redirect URLs*: add `https://rupeshkumar7.com/**` (and `https://rupesh-kumar-website.vercel.app/**` if you still sign in there)
    (This is what makes the admin sign-in email link return to your site.)
 
 Every push to the `main` branch redeploys automatically.
 
 ### Custom domain (later)
-Vercel → Project → Settings → Domains → add your domain. Then set `NEXT_PUBLIC_SITE_URL` to it in Vercel, and add the domain to Supabase's Site URL / Redirect URLs.
+The custom domain **rupeshkumar7.com** is managed in Vercel → Project → Settings → Domains and is set as the canonical address in `lib/site.ts`. To change it, update `lib/site.ts` (or set `NEXT_PUBLIC_SITE_URL` in Vercel) and the Supabase Site URL / Redirect URLs.
 
 ---
 
@@ -132,4 +132,4 @@ npx expo export --platform web
 ```
 
 Travel OS uses its own Supabase project. In that project, under **Authentication → URL Configuration**, add
-`https://<your-domain>/travel-os/**` to *Redirect URLs* so sign-up confirmation and password-reset emails return to the app.
+`https://rupeshkumar7.com/travel-os/**` to *Redirect URLs* so sign-up confirmation and password-reset emails return to the app.
