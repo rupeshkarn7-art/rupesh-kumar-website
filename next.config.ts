@@ -34,6 +34,8 @@ const nextConfig: NextConfig = {
     return [
       { source: "/:path*", headers: securityHeaders },
       { source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+      // Travel OS "Near me" needs the browser's location permission on its own pages only.
+      { source: "/travel-os/:path*", headers: [{ key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self)" }] },
     ];
   },
   async redirects() {
