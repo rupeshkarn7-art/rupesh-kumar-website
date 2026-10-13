@@ -57,6 +57,57 @@ export const seedProjects: Project[] = [
     sort_order: 10,
   },
   {
+    slug: "travel-os",
+    title: "Travel OS — All-in-One Trip Planning App",
+    summary:
+      "A cross-platform travel app that brings destination discovery, entry requirements, itineraries, budgets and checklists into one place. Live on the web; built for Android and iOS.",
+    category: "Mobile Applications",
+    project_type: "Personal",
+    status: "In Progress",
+    year: 2026,
+    role: "Product owner — product definition, design direction, build and launch",
+    technologies: ["React Native", "Expo", "Expo Router", "TypeScript", "Supabase", "PostgreSQL", "TanStack Query", "Leaflet / OpenStreetMap"],
+    key_features: [
+      "Destination guides with attractions, maps and travel inspiration",
+      "Travel readiness: documents, permits and local rules — each with a source and last-verified date",
+      "Trip builder: dates, travellers and budget turned into a day-wise itinerary",
+      "Per-trip budget tracker with categories and expenses",
+      "Packing and preparation checklist with priorities",
+      "Saved places, search history and in-app notifications",
+      "Admin console to manage destinations and requirements and review reports",
+    ],
+    cover_image: null,
+    screenshots: [],
+    github_url: null,
+    demo_url: "https://rupesh-kumar-website.vercel.app/travel-os",
+    demo_video_url: null,
+    overview:
+      "Planning a trip usually means juggling a dozen tabs and apps: one for inspiration, one for visa and permit rules, a spreadsheet for the budget, a notes app for packing. Travel OS puts the whole journey in one place — from choosing a destination to the checklist the night before you leave.\n\n**Try it:** the web version runs in any browser on phone, tablet or laptop. On a phone, use *Add to Home Screen* to open it like an app.",
+    problem:
+      "Travel planning is fragmented. Requirements such as documents and permits are hard to find and often out of date, itineraries and budgets live in separate tools, and nothing ties them to a single trip.",
+    objectives:
+      "- One app for discovery, requirements, itinerary, budget and checklist\n- Trustworthy requirements: every rule shows its source and when it was last verified\n- Works on Android, iOS and the web from a single codebase\n- Secure by default: each traveller sees only their own trips",
+    solution:
+      "A single Expo (React Native) codebase that ships as a native app and as a web app. Content such as destinations, attractions, documents and permits is curated through an admin console; each user's trips, itineraries, expenses and checklists are stored securely in Supabase.",
+    architecture:
+      "- **Client:** Expo + React Native with Expo Router (file-based navigation), TypeScript, TanStack Query for data fetching and caching\n- **Backend:** Supabase — PostgreSQL, Auth (email and password, password reset) and row-level security on every table\n- **Maps:** Leaflet with OpenStreetMap tiles (no API key), handing directions off to the device's map app\n- **Security:** on mobile the session is AES-encrypted with the key held in the device keystore\n- **Delivery:** static web build hosted on this site; native builds through Expo Application Services (EAS)",
+    workflow:
+      "1. Explore destinations or search for one\n2. Check travel readiness — documents, permits, local rules and safety information\n3. Create a trip with dates, travellers and budget\n4. Generate and edit a day-wise itinerary, view it on the map\n5. Track expenses against the budget and tick off the checklist",
+    implementation:
+      "Built as a personal product. The web version is live on this site; Android and iOS builds are configured through EAS.",
+    impact: "",
+    challenges:
+      "Keeping travel requirements accurate and clearly sourced, and making one codebase feel native on phones while still working well in a desktop browser.",
+    lessons:
+      "Designing the data model and security rules first made every later feature — budgets, checklists, admin tools — straightforward to add.",
+    future:
+      "Publish the Android app, add AI-assisted itinerary suggestions, offline access to trip details and collaborative trips for groups.",
+    is_case_study: false,
+    featured: true,
+    published: true,
+    sort_order: 15,
+  },
+  {
     slug: "multi-site-network-modernisation",
     title: "Network Modernisation Across 200+ Sites",
     summary:

@@ -42,6 +42,18 @@ const nextConfig: NextConfig = {
       { source: "/career-mentoring", destination: "/mentoring", permanent: true },
     ];
   },
+  async rewrites() {
+    // Travel OS is a single-page Expo web app served from /public/travel-os.
+    // Real files (JS, images) are served as-is; every other in-app route loads the app shell.
+    return {
+      beforeFiles: [],
+      afterFiles: [
+        { source: "/travel-os", destination: "/travel-os/index.html" },
+        { source: "/travel-os/:path*", destination: "/travel-os/index.html" },
+      ],
+      fallback: [],
+    };
+  },
 };
 
 export default nextConfig;

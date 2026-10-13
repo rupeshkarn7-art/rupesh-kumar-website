@@ -115,3 +115,21 @@ npm run dev                  # http://localhost:3000
 
 Regenerate starter resources: `python3 scripts/build_resources.py`
 Print seed SQL for a fresh database: `node scripts/seed-sql.ts > seed.sql`
+
+---
+
+## 6. Hosted app: Travel OS (`/travel-os`)
+
+`public/travel-os/` holds the production web build of the **Travel OS** Expo app, served at `yoursite/travel-os`.
+A rewrite in `next.config.ts` sends every in-app route (e.g. `/travel-os/trip/123`) to the app shell, so links and page refreshes work.
+
+To publish a new version of the app:
+
+```bash
+# in the Travel OS project (app.json has "experiments": { "baseUrl": "/travel-os" })
+npx expo export --platform web
+# then replace this repo's public/travel-os/ with the new dist/ folder and push
+```
+
+Travel OS uses its own Supabase project. In that project, under **Authentication → URL Configuration**, add
+`https://<your-domain>/travel-os/**` to *Redirect URLs* so sign-up confirmation and password-reset emails return to the app.
