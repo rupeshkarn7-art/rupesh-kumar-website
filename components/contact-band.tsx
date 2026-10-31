@@ -42,7 +42,7 @@ export function ContactBand({
                     </span>
                     <span className="mt-0.5 block text-[14.5px] text-muted">{r.detail}</span>
                   </span>
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line-strong text-ink transition-all group-hover:border-ink group-hover:bg-ink group-hover:text-paper">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line-strong text-ink transition-all group-hover:border-accent group-hover:bg-accent group-hover:text-white">
                     <ArrowRight size={16} />
                   </span>
                 </Link>

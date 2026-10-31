@@ -142,10 +142,10 @@ export function ArticleCard({ article, variant = "default" }: { article: Article
   }
   if (variant === "feature") {
     return (
-      <article className="group relative flex h-full flex-col justify-between overflow-hidden rounded-xl bg-night p-7 text-paper sm:p-9">
+      <article className="group relative flex h-full flex-col justify-between overflow-hidden rounded-xl bg-card-dark p-7 text-paper sm:p-9">
         <div className="grid-lines pointer-events-none absolute inset-0 opacity-[0.15] invert" aria-hidden />
         <div className="relative">
-          <span className="text-[12.5px] font-medium text-[#e9a989]">{article.category} · {article.content_type}</span>
+          <span className="text-[12.5px] font-medium text-highlight">{article.category} · {article.content_type}</span>
           <h3 className="display mt-4 text-[1.9rem] leading-[1.1] sm:text-[2.3rem]">
             <Link href={href} className="after:absolute after:inset-0">{article.title}</Link>
           </h3>

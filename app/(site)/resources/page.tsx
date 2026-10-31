@@ -26,8 +26,8 @@ export default async function ResourcesPage() {
         intro="Practical tools from real programmes — free to download and adapt. New resources are added regularly."
         aside={
           report?.file_url ? (
-            <a href={report.file_url} download="" className="group block rounded-xl bg-night p-6 text-paper">
-              <span className="text-[12.5px] font-medium text-[#e9a989]">Featured report · PDF</span>
+            <a href={report.file_url} download="" className="group block rounded-xl bg-card-dark p-6 text-paper">
+              <span className="text-[12.5px] font-medium text-highlight">Featured report · PDF</span>
               <span className="display mt-3 block text-[1.5rem] leading-[1.15]">{report.title}</span>
               <span className="mt-2 block text-[14px] leading-snug text-paper/60">{report.description}</span>
               <span className="mt-5 inline-flex items-center gap-2 text-[14px] font-medium">

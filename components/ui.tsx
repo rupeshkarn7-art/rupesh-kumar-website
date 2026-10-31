@@ -10,12 +10,12 @@ import { Reveal } from "@/components/motion/reveal";
 
 type Variant = "primary" | "secondary" | "ghost" | "accent" | "light" | "outline-light";
 const variants: Record<Variant, string> = {
-  primary: "bg-ink text-paper border border-ink shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_6px_16px_-10px_rgba(11,23,38,0.7)] hover:bg-ink-2",
+  primary: "bg-brand-cta text-white border border-transparent shadow-[0_1px_0_rgba(255,255,255,0.12)_inset,0_8px_18px_-12px_rgba(37,99,235,0.7)] hover:brightness-[0.92]",
   accent: "bg-accent text-white border border-accent hover:bg-accent-ink",
-  secondary: "bg-surface text-ink border border-line-strong hover:border-ink",
-  ghost: "text-ink border border-transparent hover:bg-paper-2",
-  light: "bg-paper text-ink border border-paper hover:bg-white",
-  "outline-light": "bg-transparent text-paper border border-paper/25 hover:border-paper/60 hover:bg-paper/5",
+  secondary: "bg-surface text-ink border border-line-strong hover:border-accent hover:text-accent-ink",
+  ghost: "text-ink border border-transparent hover:bg-accent-soft hover:text-accent-ink",
+  light: "bg-white text-ink border border-white hover:bg-accent-soft",
+  "outline-light": "bg-transparent text-paper border border-line-dark hover:border-highlight hover:bg-white/5",
 };
 const sizes = {
   sm: "h-9 px-3.5 text-[13.5px] gap-1.5",
@@ -25,7 +25,7 @@ const sizes = {
 
 export function buttonClass(variant: Variant = "primary", size: keyof typeof sizes = "md", className?: string) {
   return cn(
-    "inline-flex select-none items-center justify-center whitespace-nowrap rounded-lg font-medium transition-[background-color,border-color,color,transform] duration-200 active:translate-y-px disabled:pointer-events-none disabled:opacity-50",
+    "inline-flex select-none items-center justify-center whitespace-nowrap rounded-lg font-medium transition-[background-color,border-color,color,transform,filter] duration-200 active:translate-y-px disabled:pointer-events-none disabled:opacity-50",
     variants[variant],
     sizes[size],
     className,
@@ -134,6 +134,7 @@ export function PageHero({
   intro,
   children,
   aside,
+  tint = "blue",
 }: {
   eyebrow: string;
   title: ReactNode;
@@ -141,9 +142,11 @@ export function PageHero({
   children?: ReactNode;
   /** Optional right-hand column (facts, image, CTA) on large screens */
   aside?: ReactNode;
+  /** Subtle background wash: blue by default, teal for mentoring */
+  tint?: "blue" | "teal";
 }) {
   return (
-    <header className="relative overflow-hidden border-b border-line bg-paper">
+    <header className={cn("relative overflow-hidden border-b border-line", tint === "teal" ? "bg-tint-teal" : "bg-tint-blue")}>
       <div className="grid-lines pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_80%)]" aria-hidden />
       <div className={cn("container-x relative pb-14 pt-14 sm:pb-20 sm:pt-20", aside && "grid gap-12 lg:grid-cols-[1.5fr_1fr] lg:items-end")}>
         <div>

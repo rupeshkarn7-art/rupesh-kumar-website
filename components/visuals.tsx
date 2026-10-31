@@ -97,13 +97,13 @@ export const AIOPS_LAYERS = [
 
 function AIOpsVisual({ compact }: { compact?: boolean }) {
   return (
-    <div className="flex h-full w-full flex-col justify-center gap-[5px] bg-night px-[10%] py-[7%]">
+    <div className="flex h-full w-full flex-col justify-center gap-[5px] bg-card-dark px-[10%] py-[7%]">
       {AIOPS_LAYERS.map((l, i) => (
         <div
           key={l}
           className="flex items-center justify-between rounded-[5px] border border-paper/10 px-3"
           style={{
-            background: i === 4 ? "rgba(176,80,42,0.9)" : `rgba(247,246,242,${0.04 + i * 0.012})`,
+            background: i === 4 ? "rgba(37,99,235,0.9)" : `rgba(244,247,251,${0.04 + i * 0.012})`,
             height: compact ? "11%" : "12%",
           }}
         >
@@ -118,7 +118,7 @@ function AIOpsVisual({ compact }: { compact?: boolean }) {
 function SitesVisual({ count, label }: { count: number; label: string }) {
   const cols = 20;
   return (
-    <div className="flex h-full w-full flex-col justify-between bg-night p-[8%]">
+    <div className="flex h-full w-full flex-col justify-between bg-card-dark p-[8%]">
       <div className="flex items-baseline justify-between">
         <span className="display text-[2.4rem] leading-none text-paper">{label.split(" ")[0]}</span>
         <span className="text-[11px] text-paper/50">{label.split(" · ")[1]}</span>
@@ -127,7 +127,7 @@ function SitesVisual({ count, label }: { count: number; label: string }) {
         {Array.from({ length: count }).map((_, i) => {
           const col = i % cols;
           const lit = col < 6 ? 0.95 : col < 11 ? 0.6 : col < 15 ? 0.35 : 0.16;
-          return <span key={i} className="aspect-square rounded-full" style={{ background: `rgba(233,169,137,${lit})` }} />;
+          return <span key={i} className="aspect-square rounded-full" style={{ background: `rgba(94,201,186,${lit})` }} />;
         })}
       </div>
       <div className="flex items-center gap-4 text-[10.5px] text-paper/45">
@@ -147,7 +147,7 @@ const PATTERNS: Record<string, "grid" | "rings" | "bars" | "lines"> = {
 function TypographicCover({ project }: { project: Project }) {
   const pattern = PATTERNS[project.category] ?? "grid";
   return (
-    <div className="relative h-full w-full overflow-hidden bg-night">
+    <div className="relative h-full w-full overflow-hidden bg-card-dark">
       <svg className="absolute inset-0 h-full w-full text-paper" preserveAspectRatio="none" viewBox="0 0 400 225" aria-hidden>
         {pattern === "lines" &&
           Array.from({ length: 14 }).map((_, i) => (
@@ -173,7 +173,7 @@ function TypographicCover({ project }: { project: Project }) {
       </svg>
       <div className="absolute inset-0 flex flex-col justify-end p-[7%]">
         <span className="display text-[1.55rem] leading-[1.1] text-paper">{project.category}</span>
-        <span className="mt-1.5 line-clamp-1 text-[11.5px] text-[#e9a989]">{project.technologies.slice(0, 3).join(" · ")}</span>
+        <span className="mt-1.5 line-clamp-1 text-[11.5px] text-highlight">{project.technologies.slice(0, 3).join(" · ")}</span>
       </div>
     </div>
   );
@@ -224,8 +224,8 @@ export function ProjectVisual({ project, priority, compact }: { project: Project
 /** Kept for backward compatibility with older imports. */
 export function CoverArt({ label, className }: { seed: string; label: string; className?: string }) {
   return (
-    <div className={cn("relative bg-night", className)}>
-      <span className="absolute bottom-4 left-5 text-[11px] text-[#e9a989]">{label}</span>
+    <div className={cn("relative bg-card-dark", className)}>
+      <span className="absolute bottom-4 left-5 text-[11px] text-highlight">{label}</span>
     </div>
   );
 }

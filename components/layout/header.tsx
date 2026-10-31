@@ -20,7 +20,7 @@ export function Logo({ className, tone = "dark" }: { className?: string; tone?: 
         aria-hidden
       >
         rk
-        <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border-2 border-paper bg-accent" />
+        <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border-2 border-paper bg-teal" />
       </span>
       <span className="leading-none">
         <span className={cn("block text-[15px] font-semibold tracking-[-0.01em]", tone === "dark" ? "text-ink" : "text-paper")}>Rupesh Kumar</span>
@@ -157,9 +157,9 @@ export function Header() {
                       <Link
                         href="/hub/enterprise-network-vendors-2026-market-landscape"
                         tabIndex={hubOpen ? 0 : -1}
-                        className="group flex flex-col justify-between bg-night p-5 text-paper"
+                        className="group flex flex-col justify-between bg-card-dark p-5 text-paper"
                       >
-                        <span className="text-[12px] font-medium text-[#e9a989]">Featured series · 6 parts</span>
+                        <span className="text-[12px] font-medium text-highlight">Featured series · 6 parts</span>
                         <span>
                           <span className="display block text-[1.35rem] leading-[1.15]">Enterprise Network Vendors 2026</span>
                           <span className="mt-2 block text-[13px] leading-snug text-paper/60">

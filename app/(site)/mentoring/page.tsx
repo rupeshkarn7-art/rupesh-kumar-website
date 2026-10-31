@@ -18,6 +18,7 @@ export default function MentoringPage() {
   return (
     <>
       <PageHero
+        tint="teal"
         eyebrow="Career mentoring"
         title="Build a Better Technology Career"
         intro="Practical, honest guidance from someone who moved from engineering into project management, through an MBA and into technology leadership — and remembers what was confusing along the way."
@@ -100,7 +101,7 @@ export default function MentoringPage() {
             ["3 · Session", "We meet on video. You leave with clear next steps and a short written summary."],
           ].map(([t, d]) => (
             <div key={t}>
-              <p className="text-[13px] font-semibold text-[#e9a989]">{t}</p>
+              <p className="text-[13px] font-semibold text-highlight">{t}</p>
               <p className="mt-2 text-[16px] leading-relaxed text-paper/75">{d}</p>
             </div>
           ))}

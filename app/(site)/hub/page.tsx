@@ -69,7 +69,7 @@ export default async function HubPage() {
       </PageHero>
 
       {series.length > 0 && (
-        <section className="bg-night text-paper">
+        <section className="bg-brand-hero text-paper">
           <div className="container-x grid gap-12 py-16 sm:py-20 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
             <Reveal>
               <p className="eyebrow eyebrow-dark mb-5">Featured research · {series.length}-part series</p>
@@ -82,7 +82,7 @@ export default async function HubPage() {
                 <a
                   href={report.file_url}
                   download=""
-                  className="mt-7 inline-flex items-center gap-2 rounded-lg border border-paper/25 px-4 py-2.5 text-[14.5px] text-paper transition-colors hover:border-paper/60"
+                  className="mt-7 inline-flex items-center gap-2 rounded-lg border border-line-dark px-4 py-2.5 text-[14.5px] text-paper transition-colors hover:border-highlight"
                 >
                   <Download size={16} /> Download the full report (PDF)
                 </a>
@@ -93,8 +93,8 @@ export default async function HubPage() {
                 {series.map((a, i) => (
                   <li key={a.slug}>
                     <Link href={`/hub/${a.slug}`} className="group grid grid-cols-[3rem_1fr_auto] items-baseline gap-4 border-t border-paper/10 py-4">
-                      <span className="font-mono text-[12.5px] text-[#e9a989]">Part {i + 1}</span>
-                      <span className="text-[16px] leading-snug text-paper transition-colors group-hover:text-[#e9a989]">{a.title}</span>
+                      <span className="font-mono text-[12.5px] text-highlight">Part {i + 1}</span>
+                      <span className="text-[16px] leading-snug text-paper transition-colors group-hover:text-highlight">{a.title}</span>
                       <span className="hidden text-[12.5px] text-paper/45 sm:block">{readingTime(a.content)} min</span>
                     </Link>
                   </li>

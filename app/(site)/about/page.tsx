@@ -52,7 +52,7 @@ export default function AboutPage() {
           </div>
           <aside className="lg:pt-2">
             <div className="sticky top-24 space-y-6">
-              <div className="overflow-hidden rounded-xl border border-line bg-[#f4f5f6]">
+              <div className="overflow-hidden rounded-xl border border-line bg-paper-2">
                 <Image src={siteConfig.portraitSquare} alt="Rupesh Kumar" width={600} height={600} className="h-auto w-full" sizes="(min-width:1024px) 400px, 100vw" />
               </div>
               <dl className="card divide-y divide-line">
@@ -75,15 +75,15 @@ export default function AboutPage() {
       </Section>
 
       {/* Proof points */}
-      <section className="bg-night text-paper">
+      <section className="bg-brand-hero text-paper">
         <div className="container-x py-14 sm:py-16">
-          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-paper/10 bg-paper/10 lg:grid-cols-4">
+          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line-dark bg-line-dark lg:grid-cols-4">
             {outcomes.map((o) => (
-              <div key={o.label} className="bg-night p-6">
+              <div key={o.label} className="bg-card-dark p-6">
                 <dt className="sr-only">{o.label}</dt>
                 <dd className="display text-[2.5rem] leading-none"><CountUp value={o.value} /></dd>
                 <dd aria-hidden className="mt-3 text-[14px] leading-snug text-paper/75">{o.label}</dd>
-                <dd className="mt-3 text-[12px] text-[#e9a989]">{o.context}</dd>
+                <dd className="mt-3 text-[12px] text-highlight">{o.context}</dd>
               </div>
             ))}
           </dl>
@@ -232,7 +232,7 @@ export default function AboutPage() {
             <ButtonLink href={siteConfig.resumePath} download variant="light" size="lg">
               <Download size={16} /> Download PDF
             </ButtonLink>
-            <ButtonLink href="/resume" size="lg" className="border-paper/20 bg-transparent text-paper hover:bg-paper/10">View online</ButtonLink>
+            <ButtonLink href="/resume" size="lg" variant="outline-light">View online</ButtonLink>
           </div>
         </div>
       </Section>

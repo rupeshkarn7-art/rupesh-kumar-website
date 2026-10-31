@@ -2,30 +2,37 @@
 @plugin "@tailwindcss/typography";
 
 /* ------------------------------------------------------------------
-   Design system — "Ink & Copper", v2
+   Design system — "Midnight, Blue & Teal", v3
    Two families: Newsreader (editorial display) + Geist Sans (UI/body).
    Geist Mono is used only for figures and dates.
-   Restrained palette: warm paper, deep ink, one copper accent.
+   Restrained palette: cloud-white paper, midnight navy, electric-blue interaction, teal highlight.
 ------------------------------------------------------------------- */
 @theme {
-  --color-paper: #f7f6f2;
-  --color-paper-2: #efede6;
-  --color-paper-3: #e7e4db;
-  --color-surface: #ffffff;
-  --color-ink: #0b1726;
-  --color-ink-2: #1a2a3d;
-  --color-ink-3: #34445a;
-  --color-muted: #5b6573;
-  --color-faint: #8a929d;
-  --color-line: #e4e1d8;
-  --color-line-strong: #cdc8bc;
-  --color-accent: #b0502a;
-  --color-accent-ink: #8c3d1c;
-  --color-accent-soft: #f5e8e0;
-  --color-night: #0b1726;
-  --color-night-2: #13233a;
-  --color-ok: #1e6b3a;
-  --color-danger: #a12b1d;
+  /* Brand palette — Midnight Navy · Electric Blue · Teal.
+     Navy carries authority, blue marks interaction, teal is a sparing highlight. */
+  --color-paper: #f4f7fb;        /* Cloud White — page background */
+  --color-paper-2: #eaf0f7;
+  --color-paper-3: #e2e8f0;
+  --color-surface: #ffffff;      /* Pure White — cards */
+  --color-ink: #0b1220;          /* Midnight Navy — headings, dark controls */
+  --color-ink-2: #111827;        /* Dark Text — body copy */
+  --color-ink-3: #334155;
+  --color-muted: #475569;        /* Slate Text */
+  --color-faint: #5f6e82;
+  --color-line: #e2e8f0;         /* Subtle border */
+  --color-line-strong: #cbd5e1;  /* Soft Silver */
+  --color-line-dark: #263449;    /* Borders on dark surfaces */
+  --color-accent: #2563eb;       /* Electric Blue — primary interaction */
+  --color-accent-ink: #1d4ed8;
+  --color-accent-soft: #eff6ff;
+  --color-teal: #0d9488;         /* Teal — selective highlight (graphics, rules, dots) */
+  --color-teal-ink: #0f766e;     /* Teal for text on light (AA) */
+  --color-teal-soft: #f0fdfa;
+  --color-highlight: #5ec9ba;    /* Teal tuned for text on navy (AA) */
+  --color-night: #0b1220;        /* Midnight Navy */
+  --color-night-2: #14243a;      /* Deep Slate */
+  --color-ok: #15803d;
+  --color-danger: #b91c1c;
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
@@ -82,20 +89,27 @@
 }
 
 @layer components {
+  /* Gradient system — used selectively, never on every section */
+  .bg-brand-hero { background-color: #0b1220; background-image: linear-gradient(115deg, #0b1220 0%, #14243a 55%, #164e63 100%); }
+  .bg-brand-cta { background-color: #2563eb; background-image: linear-gradient(100deg, #2563eb 0%, #0f766e 100%); }
+  .bg-tint-blue { background-color: #f4f7fb; background-image: linear-gradient(135deg, #eff6ff 0%, #f4f7fb 100%); }
+  .bg-tint-teal { background-color: #f4f7fb; background-image: linear-gradient(135deg, #f0fdfa 0%, #f4f7fb 100%); }
+  .bg-card-dark { background-color: #0b1220; background-image: linear-gradient(145deg, #14243a 0%, #0b1220 100%); }
+
   .container-x {
     @apply mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-10;
   }
-  /* Section kicker: quiet sans label with a copper rule — no shouting uppercase mono */
+  /* Section kicker: quiet sans label with a teal rule — no shouting uppercase mono */
   .eyebrow {
     @apply inline-flex items-center gap-2.5 text-[13px] font-medium tracking-[0.01em] text-accent-ink;
   }
   .eyebrow::before {
     content: "";
-    @apply inline-block h-px w-5 bg-accent;
+    @apply inline-block h-px w-5 bg-teal;
   }
   .eyebrow-plain::before { display: none; }
-  .eyebrow-dark { color: #e9a989; }
-  .eyebrow-dark::before { background: #e9a989; }
+  .eyebrow-dark { color: var(--color-highlight); }
+  .eyebrow-dark::before { background: var(--color-highlight); }
   .meta {
     @apply font-mono text-[12px] tracking-tight text-faint;
   }
@@ -112,22 +126,22 @@
     @apply rounded-xl border border-line bg-surface transition-[border-color,box-shadow,transform] duration-300;
   }
   .card-hover {
-    @apply hover:-translate-y-0.5 hover:border-line-strong hover:shadow-[0_22px_44px_-30px_rgba(11,23,38,0.45)];
+    @apply hover:-translate-y-0.5 hover:border-line-strong hover:shadow-[0_22px_44px_-30px_rgba(11,18,32,0.35)];
   }
   .link-underline {
     @apply underline decoration-line-strong decoration-1 underline-offset-[5px] transition-colors hover:decoration-accent;
   }
   .input {
     @apply w-full rounded-lg border border-line-strong bg-surface px-3.5 py-2.5 text-[15px] text-ink placeholder:text-faint
-      transition-colors focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10;
+      transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15;
   }
   .label {
     @apply mb-1.5 block text-sm font-medium text-ink-2;
   }
   .grid-lines {
     background-image:
-      linear-gradient(to right, rgba(11, 23, 38, 0.045) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(11, 23, 38, 0.045) 1px, transparent 1px);
+      linear-gradient(to right, rgba(20, 36, 58, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(20, 36, 58, 0.05) 1px, transparent 1px);
     background-size: 56px 56px;
   }
   .hairline-top { box-shadow: inset 0 1px 0 var(--color-line); }
@@ -208,10 +222,10 @@
 
 /* Minimal syntax highlighting (highlight.js classes) */
 .hljs-comment, .hljs-quote { color: #8b97a8; font-style: italic; }
-.hljs-keyword, .hljs-selector-tag, .hljs-built_in { color: #f0a77f; }
+.hljs-keyword, .hljs-selector-tag, .hljs-built_in { color: #93b4f8; }
 .hljs-string, .hljs-attr, .hljs-template-tag { color: #a8d4a0; }
 .hljs-number, .hljs-literal { color: #e8c37a; }
-.hljs-title, .hljs-function .hljs-title, .hljs-section { color: #9cc4f0; }
+.hljs-title, .hljs-function .hljs-title, .hljs-section { color: #5ec9ba; }
 .hljs-params, .hljs-variable { color: #e6e9ef; }
 
 @media (prefers-reduced-motion: reduce) {

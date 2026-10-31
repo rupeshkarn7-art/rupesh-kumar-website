@@ -110,7 +110,7 @@ export default async function HomePage() {
   return (
     <>
       {/* ───────────────────────── 1 · HERO ───────────────────────── */}
-      <section className="relative overflow-hidden border-b border-line">
+      <section className="relative overflow-hidden border-b border-line bg-tint-blue">
         <div className="grid-lines pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_75%_35%,black,transparent_68%)]" aria-hidden />
         <div className="container-x relative grid gap-14 pb-16 pt-12 sm:pt-16 lg:grid-cols-[1.2fr_1fr] lg:gap-16 lg:pb-24 lg:pt-20">
           <div className="flex flex-col">
@@ -155,7 +155,7 @@ export default async function HomePage() {
 
           <div className="relative mx-auto w-full max-w-[460px] animate-rise [animation-delay:100ms] lg:max-w-none">
             <NetworkMotif className="pointer-events-none absolute -left-20 top-10 hidden h-[82%] opacity-60 xl:block" />
-            <figure className="relative ml-auto overflow-hidden rounded-2xl border border-line bg-[#f4f5f6] lg:w-[88%]">
+            <figure className="relative ml-auto overflow-hidden rounded-2xl border border-line bg-paper-2 lg:w-[88%]">
               <Image
                 src={siteConfig.portrait}
                 alt="Portrait of Rupesh Kumar"
@@ -181,7 +181,7 @@ export default async function HomePage() {
       </section>
 
       {/* ───────────────────────── 2 · CREDIBILITY ───────────────────────── */}
-      <section className="bg-night text-paper">
+      <section className="bg-brand-hero text-paper">
         <div className="container-x py-20 sm:py-24">
           <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <h2 className="display max-w-xl text-[2rem] leading-[1.1] sm:text-[2.5rem]">Programmes delivered at enterprise scale.</h2>
@@ -190,15 +190,15 @@ export default async function HomePage() {
             </p>
           </Reveal>
 
-          <dl className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-paper/10 bg-paper/10 lg:grid-cols-4">
+          <dl className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line-dark bg-line-dark lg:grid-cols-4">
             {outcomes.map((o, i) => (
-              <Reveal key={o.label} delay={i * 80} className="flex flex-col bg-night p-5 sm:p-7">
+              <Reveal key={o.label} delay={i * 80} className="flex flex-col bg-card-dark p-5 sm:p-7">
                 <dt className="sr-only">{o.label}</dt>
                 <dd className="display text-[2.2rem] leading-none text-paper sm:text-[3.1rem]">
                   <CountUp value={o.value} />
                 </dd>
                 <dd aria-hidden className="mt-3 text-[13.5px] leading-snug text-paper/80 sm:mt-4 sm:text-[15px]">{o.label}</dd>
-                <dd className="mt-auto pt-5 text-[12.5px] text-[#e9a989]">{o.context}</dd>
+                <dd className="mt-auto pt-5 text-[12.5px] text-highlight">{o.context}</dd>
               </Reveal>
             ))}
           </dl>
@@ -210,7 +210,7 @@ export default async function HomePage() {
                 {careerPath.map((c, i) => (
                   <li key={c.org}>
                     <span className="flex items-center gap-2">
-                      <span className={`h-2 w-2 rounded-full ${i === careerPath.length - 1 ? "bg-[#e9a989]" : "bg-paper/35"}`} aria-hidden />
+                      <span className={`h-2 w-2 rounded-full ${i === careerPath.length - 1 ? "bg-highlight" : "bg-paper/35"}`} aria-hidden />
                       <span className="font-mono text-[12px] text-paper/45">{c.year}</span>
                     </span>
                     <span className="mt-2 block text-[15.5px] font-medium text-paper">{c.org}</span>
@@ -248,7 +248,7 @@ export default async function HomePage() {
           <div className="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
             {capabilities.map(({ Icon, title, plain, proof, href }, i) => (
               <Reveal key={title} delay={(i % 3) * 70} className="h-full">
-                <Link href={href} className="group flex h-full flex-col bg-surface p-7 transition-colors hover:bg-paper sm:p-8">
+                <Link href={href} className="group flex h-full flex-col bg-surface p-7 transition-colors hover:bg-accent-soft/60 sm:p-8">
                   <span className="flex items-center justify-between">
                     <span className="grid h-10 w-10 place-items-center rounded-lg border border-line text-ink transition-colors group-hover:border-accent group-hover:text-accent-ink">
                       <Icon size={20} />
@@ -258,7 +258,7 @@ export default async function HomePage() {
                   <h3 className="mt-6 text-[18px] font-semibold tracking-[-0.01em] text-ink">{title}</h3>
                   <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{plain}</p>
                   <p className="mt-auto flex items-start gap-2 pt-6 text-[13px] leading-snug text-ink-3">
-                    <Check size={14} className="mt-0.5 shrink-0 text-accent" />
+                    <Check size={14} className="mt-0.5 shrink-0 text-teal" />
                     {proof}
                   </p>
                 </Link>
@@ -302,11 +302,11 @@ export default async function HomePage() {
           <SectionHeader
             dark
             eyebrow="Consulting"
-            title={<>Technology &amp; programme advice, <span className="italic text-[#e9a989]">grounded in delivery.</span></>}
+            title={<>Technology &amp; programme advice, <span className="italic text-highlight">grounded in delivery.</span></>}
             intro="For IT leaders, PMOs and growing organisations planning network, infrastructure, operations or AI initiatives."
           />
-          <div className="grid gap-px overflow-hidden rounded-xl border border-paper/10 bg-paper/10 lg:grid-cols-3">
-            <Reveal className="bg-night p-7 sm:p-9">
+          <div className="grid gap-px overflow-hidden rounded-xl border border-line-dark bg-line-dark lg:grid-cols-3">
+            <Reveal className="bg-card-dark p-7 sm:p-9">
               <p className="text-[13px] font-medium text-paper/45">Problems I solve</p>
               <ul className="mt-5 space-y-4">
                 {problems.map((t) => (
@@ -314,25 +314,25 @@ export default async function HomePage() {
                 ))}
               </ul>
             </Reveal>
-            <Reveal delay={80} className="bg-night p-7 sm:p-9">
+            <Reveal delay={80} className="bg-card-dark p-7 sm:p-9">
               <p className="text-[13px] font-medium text-paper/45">Services</p>
               <ul className="mt-4 divide-y divide-paper/10">
                 {consultingServices.slice(0, 6).map((s) => (
                   <li key={s.slug}>
                     <Link href={`/consulting#${s.slug}`} className="group flex items-center justify-between gap-4 py-2.5 text-[15.5px] text-paper">
                       {s.title}
-                      <ArrowRight size={15} className="shrink-0 text-paper/30 transition-all group-hover:translate-x-0.5 group-hover:text-[#e9a989]" />
+                      <ArrowRight size={15} className="shrink-0 text-paper/30 transition-all group-hover:translate-x-0.5 group-hover:text-highlight" />
                     </Link>
                   </li>
                 ))}
               </ul>
             </Reveal>
-            <Reveal delay={160} className="bg-night p-7 sm:p-9">
+            <Reveal delay={160} className="bg-card-dark p-7 sm:p-9">
               <p className="text-[13px] font-medium text-paper/45">What you can expect</p>
               <ul className="mt-5 space-y-4">
                 {outcomesExpect.map((t) => (
                   <li key={t} className="flex gap-3 text-[15.5px] leading-snug text-paper/85">
-                    <Check size={16} className="mt-0.5 shrink-0 text-[#e9a989]" /> {t}
+                    <Check size={16} className="mt-0.5 shrink-0 text-highlight" /> {t}
                   </li>
                 ))}
               </ul>
@@ -346,7 +346,7 @@ export default async function HomePage() {
       </section>
 
       {/* ───────────────────────── 6 · MENTORING ───────────────────────── */}
-      <section className="py-20 sm:py-28 lg:py-32">
+      <section className="bg-tint-teal py-20 sm:py-28 lg:py-32">
         <div className="container-x grid gap-14 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
           <Reveal>
             <p className="eyebrow mb-5">Career mentoring</p>
@@ -373,7 +373,7 @@ export default async function HomePage() {
             <ol className="border-b border-line">
               {mentoringTopics.map((t, i) => (
                 <li key={t.title} className="grid grid-cols-[2.5rem_1fr] gap-x-4 border-t border-line py-6">
-                  <span className="font-mono text-[12.5px] text-accent">0{i + 1}</span>
+                  <span className="font-mono text-[12.5px] text-teal-ink">0{i + 1}</span>
                   <span>
                     <span className="block text-[17.5px] font-semibold tracking-[-0.01em] text-ink">{t.title}</span>
                     <span className="mt-1 block text-[15px] text-muted">{t.detail}</span>

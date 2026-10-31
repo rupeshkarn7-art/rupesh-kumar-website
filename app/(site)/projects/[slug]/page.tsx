@@ -221,7 +221,7 @@ export default async function ProjectPage({ params }: Props) {
                 </ul>
               </nav>
             )}
-            <div className="rounded-xl bg-night p-6 text-paper">
+            <div className="rounded-xl bg-card-dark p-6 text-paper">
               <p className="text-[16px] font-medium">Facing a similar challenge?</p>
               <p className="mt-1.5 text-[14px] text-paper/65">I&apos;m happy to compare notes.</p>
               <ButtonLink href="/consulting#enquire" variant="light" size="sm" className="mt-4" arrow>Discuss your project</ButtonLink>

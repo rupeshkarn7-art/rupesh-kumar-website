@@ -10,13 +10,13 @@ export function Footer() {
     <footer className="bg-night text-paper">
       <div className="container-x">
         {/* Sign-off */}
-        <div className="flex flex-col gap-8 border-b border-paper/10 py-16 sm:py-20 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-8 border-b border-line-dark py-16 sm:py-20 lg:flex-row lg:items-end lg:justify-between">
           <p className="display max-w-2xl text-[2.1rem] leading-[1.1] text-paper sm:text-[2.8rem]">
-            Technology change, delivered with <span className="italic text-[#e9a989]">business discipline.</span>
+            Technology change, delivered with <span className="italic text-highlight">business discipline.</span>
           </p>
           <Link
             href="/contact"
-            className="group inline-flex items-center gap-3 self-start border-b border-paper/30 pb-1.5 text-[17px] text-paper transition-colors hover:border-[#e9a989] lg:self-auto"
+            className="group inline-flex items-center gap-3 self-start border-b border-paper/30 pb-1.5 text-[17px] text-paper transition-colors hover:border-highlight lg:self-auto"
           >
             Start a conversation
             <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
@@ -31,7 +31,7 @@ export function Footer() {
             </p>
             <a
               href={`mailto:${siteConfig.email}`}
-              className="mt-6 inline-block text-[15px] text-paper underline decoration-paper/30 underline-offset-[5px] transition-colors hover:decoration-[#e9a989]"
+              className="mt-6 inline-block text-[15px] text-paper underline decoration-paper/30 underline-offset-[5px] transition-colors hover:decoration-highlight"
             >
               {siteConfig.email}
             </a>
@@ -55,7 +55,7 @@ export function Footer() {
           </nav>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-paper/10 py-6 text-[13px] text-paper/45 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 border-t border-line-dark py-6 text-[13px] text-paper/45 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} Rupesh Kumar · {siteConfig.location}</p>
           <p>Views are my own and do not represent any employer.</p>
         </div>
