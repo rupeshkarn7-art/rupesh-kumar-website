@@ -46,7 +46,7 @@ export default async function HubPage() {
               <div key={l} className="bg-surface p-5">
                 <dt className="sr-only">{l}</dt>
                 <dd className="display text-[2rem] leading-none text-ink">{v}</dd>
-                <dd className="mt-2 text-[13px] text-muted">{l}</dd>
+                <dd aria-hidden className="mt-2 text-[13px] text-muted">{l}</dd>
               </div>
             ))}
           </dl>

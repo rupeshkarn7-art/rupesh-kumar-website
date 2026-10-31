@@ -197,7 +197,7 @@ export default async function HomePage() {
                 <dd className="display text-[2.2rem] leading-none text-paper sm:text-[3.1rem]">
                   <CountUp value={o.value} />
                 </dd>
-                <dd className="mt-3 text-[13.5px] leading-snug text-paper/80 sm:mt-4 sm:text-[15px]">{o.label}</dd>
+                <dd aria-hidden className="mt-3 text-[13.5px] leading-snug text-paper/80 sm:mt-4 sm:text-[15px]">{o.label}</dd>
                 <dd className="mt-auto pt-5 text-[12.5px] text-[#e9a989]">{o.context}</dd>
               </Reveal>
             ))}

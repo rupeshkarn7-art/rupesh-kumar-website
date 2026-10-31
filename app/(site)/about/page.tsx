@@ -82,7 +82,7 @@ export default function AboutPage() {
               <div key={o.label} className="bg-night p-6">
                 <dt className="sr-only">{o.label}</dt>
                 <dd className="display text-[2.5rem] leading-none"><CountUp value={o.value} /></dd>
-                <dd className="mt-3 text-[14px] leading-snug text-paper/75">{o.label}</dd>
+                <dd aria-hidden className="mt-3 text-[14px] leading-snug text-paper/75">{o.label}</dd>
                 <dd className="mt-3 text-[12px] text-[#e9a989]">{o.context}</dd>
               </div>
             ))}
