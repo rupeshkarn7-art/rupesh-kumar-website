@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
@@ -20,6 +21,16 @@ export default function MentoringPage() {
         eyebrow="Career mentoring"
         title="Build a Better Technology Career"
         intro="Practical, honest guidance from someone who moved from engineering into project management, through an MBA and into technology leadership — and remembers what was confusing along the way."
+        aside={
+          <div className="flex items-center gap-5 rounded-xl border border-line bg-surface p-5">
+            <Image src={siteConfig.portraitSquare} alt="Rupesh Kumar" width={88} height={88} className="rounded-lg border border-line" />
+            <div>
+              <p className="text-[15.5px] font-semibold text-ink">Rupesh Kumar</p>
+              <p className="mt-0.5 text-[13.5px] leading-snug text-muted">Technical Account Manager · Executive MBA, IIM Lucknow · formerly BT &amp; HCLTech</p>
+              <p className="mt-2 text-[13px] text-ink-3">One-to-one · video call · reply within 2 working days</p>
+            </div>
+          </div>
+        }
       >
         <div className="flex flex-wrap gap-3">
           <ButtonLink href="#book" size="lg" arrow>Book a session</ButtonLink>
@@ -61,7 +72,7 @@ export default function MentoringPage() {
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {mentoringPackages.map((p, i) => (
             <article key={p.name} className={`card flex flex-col p-7 ${i === 1 ? "border-ink ring-1 ring-ink" : ""}`}>
-              {i === 1 && <span className="mb-3 self-start rounded-full bg-ink px-2.5 py-0.5 font-mono text-[10.5px] uppercase tracking-wider text-paper">Good place to start</span>}
+              {i === 1 && <span className="mb-3 self-start rounded-full bg-ink px-2.5 py-0.5 text-[11.5px] font-medium text-paper">Good place to start</span>}
               <h3 className="text-[19px] font-semibold tracking-tight text-ink">{p.name}</h3>
               <p className="mt-1 font-mono text-[12px] text-muted">{p.duration}</p>
               <p className="display mt-5 text-[1.45rem] text-ink">{p.price ?? <span className="text-[1.05rem] italic text-faint">Price to be configured</span>}</p>
@@ -89,7 +100,7 @@ export default function MentoringPage() {
             ["3 · Session", "We meet on video. You leave with clear next steps and a short written summary."],
           ].map(([t, d]) => (
             <div key={t}>
-              <p className="font-mono text-[12px] uppercase tracking-[0.14em] text-accent">{t}</p>
+              <p className="text-[13px] font-semibold text-[#e9a989]">{t}</p>
               <p className="mt-2 text-[16px] leading-relaxed text-paper/75">{d}</p>
             </div>
           ))}
@@ -99,7 +110,7 @@ export default function MentoringPage() {
       <Section id="book" className="scroll-mt-16">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
           <div>
-            <p className="eyebrow mb-4 flex items-center gap-2"><span className="inline-block h-px w-6 bg-accent" />Book a session</p>
+            <p className="eyebrow mb-4">Book a session</p>
             <h2 className="display text-[2.2rem] leading-[1.1] text-ink sm:text-[2.6rem]">Request a mentoring session</h2>
             <p className="mt-5 text-[16.5px] leading-relaxed text-ink-3">
               Tell me where you are in your career and what you&apos;d like to get out of the session. I&apos;ll confirm availability and next steps by email.

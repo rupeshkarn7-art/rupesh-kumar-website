@@ -65,7 +65,7 @@ export function ProjectExplorer({ projects }: { projects: Project[] }) {
         ))}
       </div>
 
-      <div className="mb-10 grid gap-3 rounded-2xl border border-line bg-surface p-3 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr_auto]">
+      <div className="mb-10 grid gap-3 rounded-xl border border-line bg-surface p-3 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr_auto]">
         <label className="relative">
           <span className="sr-only">Search projects</span>
           <Search size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-faint" />

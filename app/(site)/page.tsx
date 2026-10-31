@@ -1,15 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getArticles, getCaseStudies, getProjects, getResources } from "@/lib/data";
+import { getArticles, getProjects, getResources } from "@/lib/data";
 import { siteConfig } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
-import { outcomes, profile, testimonials } from "@/content/profile";
+import { careerPath, outcomes, profile, recognition, testimonials } from "@/content/profile";
 import { consultingServices, mentoringPackages } from "@/content/services";
-import { ButtonLink, Section, SectionHeader, TextLink } from "@/components/ui";
-import { ArticleCard, ProjectCard, ResourceCard } from "@/components/cards";
-import { SocialLinks } from "@/components/social-links";
-import { ArrowRight, Chart, Compass, Layers, Network, People, Spark } from "@/components/icons";
+import { ButtonLink, SectionHeader, TextLink } from "@/components/ui";
+import { ArticleCard, ProjectCard, ProjectFeature, ResourceRow } from "@/components/cards";
+import { NetworkMotif } from "@/components/visuals";
+import { Reveal } from "@/components/motion/reveal";
+import { CountUp } from "@/components/motion/count-up";
+import { ArrowRight, Check, Chart, Compass, Layers, Network, People, Spark } from "@/components/icons";
 import { ContactBand } from "@/components/contact-band";
 
 export const revalidate = 300;
@@ -20,342 +22,453 @@ export const metadata: Metadata = pageMetadata({
   path: "/",
 });
 
-const pillars = [
-  { k: "Technology", v: "Networks, cloud, infrastructure and operations" },
-  { k: "Projects", v: "Programme delivery and governance at scale" },
-  { k: "Business", v: "MBA lens on cost, strategy and value" },
-  { k: "AI", v: "AIOps and AI-enabled operating models" },
-  { k: "Careers", v: "Mentoring the next technology leaders" },
-];
-
-const expertise = [
-  {
-    Icon: Network,
-    title: "Infrastructure & Network Transformation",
-    body: "Multi-site LAN/WAN/WLAN modernisation, SD-WAN and MPLS, firewall and switch replacement, data-centre migration and security remediation.",
-  },
+const capabilities = [
   {
     Icon: Layers,
-    title: "Programme & Delivery Governance",
-    body: "Planning, RAID, dependency and change governance; executive reporting that surfaces risk early; coordinating vendors and global teams.",
+    title: "Technology Transformation",
+    plain: "Moving an organisation from the technology it has to the technology it needs — without breaking what works.",
+    proof: "Network modernisation across 200+ sites",
+    href: "/consulting#infrastructure-transformation",
   },
   {
     Icon: Compass,
-    title: "Technology Operations & Service",
-    body: "Aligning infrastructure, Data & Voice, cloud and end-user services with business priorities; lifecycle, compliance and escalation management.",
+    title: "Programme & Project Management",
+    plain: "Turning a goal into a plan, a plan into weekly progress, and progress into honest reporting.",
+    proof: "RAID, governance and executive dashboards at BT and HCLTech",
+    href: "/consulting#technology-program-management",
+  },
+  {
+    Icon: Network,
+    title: "Enterprise Network & Infrastructure",
+    plain: "The LAN, WAN, SD-WAN, Wi-Fi and data centres a business runs on — designed to be reliable and replaceable.",
+    proof: "20,000+ devices under remediation governance",
+    href: "/consulting#network-transformation",
+  },
+  {
+    Icon: Chart,
+    title: "Technology Operations",
+    plain: "Keeping services running day to day, and aligning them with what the business actually needs.",
+    proof: "Technical Account Manager, Technology Operations at Accenture",
+    href: "/consulting#technology-governance",
   },
   {
     Icon: Spark,
     title: "AI & AIOps",
-    body: "Practical paths to AI-enabled IT and network operations — data foundations, event correlation, automation and the operating model around them.",
-  },
-  {
-    Icon: Chart,
-    title: "Technology Strategy & Finance",
-    body: "Business cases, cost optimisation and technology financial management — connecting investment to measurable outcomes.",
+    plain: "Using AI to cut alert noise and speed up fixes in IT and network operations — introduced in safe, governed stages.",
+    proof: "Seven-layer AIOps reference framework (MBA research)",
+    href: "/consulting#ai-aiops-advisory",
   },
   {
     Icon: People,
-    title: "Career Mentoring",
-    body: "Helping engineers and early-career professionals move into project, programme and technology leadership roles.",
+    title: "Strategy & Financial Governance",
+    plain: "Linking technology spend to outcomes: business cases, cost optimisation and renewal discipline.",
+    proof: "Executive MBA, IIM Lucknow · 5-year TCO research",
+    href: "/consulting#technology-strategy",
   },
 ];
 
+const problems = [
+  "A network or infrastructure refresh that feels too risky to start",
+  "Programmes reporting “green” until the week before go-live",
+  "Technology spend rising with no clear link to outcomes",
+  "Vendor or SD-WAN decisions with too many unknowns",
+];
+
+const outcomesExpect = [
+  "A clear plan with owners, milestones and a RAID log",
+  "Honest status reporting that surfaces risk early",
+  "Business cases with cost, risk and value side by side",
+  "Vendor-neutral advice — no reseller agenda",
+];
+
+const mentoringTopics = [
+  { title: "Career strategy", detail: "A realistic 12–24 month plan for the role you want next." },
+  { title: "Resume & LinkedIn review", detail: "Make scope, impact and outcomes obvious in a 30-second scan." },
+  { title: "Interview preparation", detail: "Mock interviews for PM, TPM and technology roles, with feedback." },
+  { title: "Engineering → project management", detail: "The transition I made myself — what to do before you have the title." },
+  { title: "Technology career development", detail: "Certifications, MBA decisions and moving into AI, cloud or leadership." },
+];
+
 export default async function HomePage() {
-  const [projects, articles, resources, caseStudies] = await Promise.all([
-    getProjects(),
-    getArticles(),
-    getResources(),
-    getCaseStudies(),
-  ]);
-  const featuredProjects = (projects.filter((p) => p.featured).length ? projects.filter((p) => p.featured) : projects).slice(0, 3);
-  const latestArticles = articles.slice(0, 3);
-  const featuredResources = (resources.filter((r) => r.featured).length ? resources.filter((r) => r.featured) : resources).slice(0, 3);
+  const [projects, articles, resources] = await Promise.all([getProjects(), getArticles(), getResources()]);
+
+  const bySlug = (s: string) => projects.find((p) => p.slug === s);
+  const flagship = [bySlug("travel-os"), bySlug("multi-site-network-modernisation")].filter(Boolean) as typeof projects;
+  const secondary = projects
+    .filter((p) => !flagship.some((f) => f.slug === p.slug))
+    .sort((a, b) => Number(b.featured) - Number(a.featured) || a.sort_order - b.sort_order)
+    .slice(0, 3);
+
+  const seriesLead = articles.find((a) => a.slug === "enterprise-network-vendors-2026-market-landscape");
+  const featureArticle = seriesLead ?? articles.find((a) => a.featured) ?? articles[0];
+  const recent = articles
+    .filter((a) => a.slug !== featureArticle?.slug && !a.tags.includes("Enterprise Network Vendors 2026"))
+    .slice(0, 4);
+  const topics = Array.from(new Set(articles.map((a) => a.category))).slice(0, 8);
+  const topResources = (resources.filter((r) => r.featured).length ? resources.filter((r) => r.featured) : resources).slice(0, 4);
 
   return (
     <>
-      {/* 1 — HERO */}
+      {/* ───────────────────────── 1 · HERO ───────────────────────── */}
       <section className="relative overflow-hidden border-b border-line">
-        <div className="grid-lines pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_70%_30%,black,transparent_70%)]" aria-hidden />
-        <div className="container-x relative grid items-center gap-12 pb-16 pt-12 sm:pt-16 lg:grid-cols-[1.25fr_1fr] lg:gap-16 lg:pb-24 lg:pt-20">
-          <div>
-            <p className="eyebrow mb-6 flex items-center gap-2 animate-rise">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent/60 [animation-duration:2.4s]" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-              </span>
-              Open to consulting & mentoring conversations
+        <div className="grid-lines pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_75%_35%,black,transparent_68%)]" aria-hidden />
+        <div className="container-x relative grid gap-14 pb-16 pt-12 sm:pt-16 lg:grid-cols-[1.2fr_1fr] lg:gap-16 lg:pb-24 lg:pt-20">
+          <div className="flex flex-col">
+            <p className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[13.5px] text-ink-3 animate-rise">
+              <span className="font-semibold text-ink">Rupesh Kumar</span>
+              <span className="h-3.5 w-px bg-line-strong" aria-hidden />
+              <span>Technology Transformation &amp; Programme Leadership</span>
             </p>
-            <h1 className="display text-display text-ink animate-rise [animation-delay:60ms]">
-              Technology. Projects. AI.{" "}
-              <span className="italic text-accent-ink">Career Growth.</span>
+
+            <h1 className="display mt-7 text-[2.55rem] leading-[1.04] text-ink animate-rise [animation-delay:60ms] sm:text-[3.4rem] lg:text-[3.6rem] xl:text-[4rem]">
+              I turn complex technology programmes into outcomes{" "}
+              <span className="italic text-accent-ink">the business can measure.</span>
             </h1>
-            <p className="mt-7 max-w-xl text-[18px] leading-relaxed text-ink-3 animate-rise [animation-delay:120ms]">
-              I build technology solutions, lead complex IT projects, explore AI-driven transformation, and help professionals navigate technology careers.
+
+            <p className="lede mt-7 max-w-[34rem] animate-rise [animation-delay:120ms]">
+              Six years across IT and telecom — leading network modernisation at BT, infrastructure delivery at HCLTech, and today
+              aligning technology operations with commercial priorities at Accenture. I also build products of my own, write about
+              networks and AI, and mentor engineers moving into leadership.
             </p>
-            <div className="mt-9 flex flex-wrap gap-3 animate-rise [animation-delay:180ms]">
-              <ButtonLink href="/projects" size="lg" arrow>Explore My Projects</ButtonLink>
-              <ButtonLink href="/consulting" size="lg" variant="secondary">Work With Me</ButtonLink>
-              <ButtonLink href="/mentoring" size="lg" variant="ghost">Career Mentoring</ButtonLink>
+
+            <div className="mt-9 flex flex-wrap items-center gap-3 animate-rise [animation-delay:180ms]">
+              <ButtonLink href="/projects" size="lg" arrow>See my work</ButtonLink>
+              <ButtonLink href="/consulting" size="lg" variant="secondary">Work with me</ButtonLink>
+              <TextLink href="/about" className="ml-1">About me</TextLink>
             </div>
-            <div className="mt-10 flex flex-wrap items-center gap-4 animate-rise [animation-delay:240ms]">
-              <SocialLinks labels />
-            </div>
+
+            <dl className="mt-12 grid grid-cols-2 gap-6 border-t border-line pt-7 text-[13.5px] sm:grid-cols-[auto_auto_1fr] sm:gap-10 lg:mt-auto animate-rise [animation-delay:240ms]">
+              <div>
+                <dt className="text-faint">Experience</dt>
+                <dd className="mt-1.5 font-medium text-ink">Accenture · BT · HCLTech</dd>
+              </div>
+              <div>
+                <dt className="text-faint">Education</dt>
+                <dd className="mt-1.5 font-medium text-ink">Executive MBA, IIM Lucknow</dd>
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <dt className="text-faint">Focus</dt>
+                <dd className="mt-1.5 font-medium text-ink">Networks · Operations · AI</dd>
+              </div>
+            </dl>
           </div>
 
-          <div className="relative mx-auto w-full max-w-[420px] animate-rise [animation-delay:120ms] lg:max-w-none">
-            <div className="absolute -right-3 -top-3 hidden h-full w-full rounded-[28px] border border-line-strong sm:block" aria-hidden />
-            <figure className="relative overflow-hidden rounded-[28px] border border-line bg-[#f7f8f9]">
+          <div className="relative mx-auto w-full max-w-[460px] animate-rise [animation-delay:100ms] lg:max-w-none">
+            <NetworkMotif className="pointer-events-none absolute -left-20 top-10 hidden h-[82%] opacity-60 xl:block" />
+            <figure className="relative ml-auto overflow-hidden rounded-2xl border border-line bg-[#f4f5f6] lg:w-[88%]">
               <Image
                 src={siteConfig.portrait}
                 alt="Portrait of Rupesh Kumar"
                 width={1000}
                 height={1290}
                 priority
-                sizes="(min-width: 1024px) 440px, 90vw"
+                sizes="(min-width: 1024px) 420px, 90vw"
                 className="h-auto w-full"
               />
-              <figcaption className="absolute inset-x-3 bottom-3 rounded-2xl border border-white/60 bg-white/85 p-4 backdrop-blur-md">
-                <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-muted">Currently</p>
-                <p className="mt-1 text-[14.5px] font-medium leading-snug text-ink">
-                  {profile.currentRole}
-                </p>
-                <p className="text-[13.5px] text-muted">{profile.currentCompany} · MBA, IIM Lucknow</p>
+              <figcaption className="absolute inset-x-3 bottom-3 flex items-center gap-3 rounded-xl border border-white/70 bg-white/90 p-3.5 backdrop-blur-md">
+                <span className="relative flex h-2.5 w-2.5 shrink-0">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-ok/50 motion-safe:animate-ping [animation-duration:2.6s]" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-ok" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-[14px] font-medium leading-snug text-ink">{profile.currentRole.replace(" — ", ", ")}</span>
+                  <span className="block text-[12.5px] text-muted">{profile.currentCompany} · open to consulting &amp; mentoring</span>
+                </span>
               </figcaption>
             </figure>
           </div>
         </div>
+      </section>
 
-        {/* credential strip */}
-        <div className="relative border-t border-line bg-surface/70">
-          <div className="container-x flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:gap-8">
-            <p className="eyebrow shrink-0">Experience & education</p>
-            <ul className="flex flex-wrap items-center gap-x-7 gap-y-2 text-[15px] font-medium text-ink-3">
-              {["Accenture", "BT", "HCLTech", "IIM Lucknow", "IÉSEG, France"].map((n) => (
-                <li key={n}>{n}</li>
-              ))}
-            </ul>
+      {/* ───────────────────────── 2 · CREDIBILITY ───────────────────────── */}
+      <section className="bg-night text-paper">
+        <div className="container-x py-20 sm:py-24">
+          <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <h2 className="display max-w-xl text-[2rem] leading-[1.1] sm:text-[2.5rem]">Programmes delivered at enterprise scale.</h2>
+            <p className="max-w-sm text-[14.5px] text-paper/55">
+              Figures from roles at BT and HCLTech, as listed on my resume. Client names kept confidential.
+            </p>
+          </Reveal>
+
+          <dl className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-paper/10 bg-paper/10 lg:grid-cols-4">
+            {outcomes.map((o, i) => (
+              <Reveal key={o.label} delay={i * 80} className="flex flex-col bg-night p-5 sm:p-7">
+                <dt className="sr-only">{o.label}</dt>
+                <dd className="display text-[2.2rem] leading-none text-paper sm:text-[3.1rem]">
+                  <CountUp value={o.value} />
+                </dd>
+                <dd className="mt-3 text-[13.5px] leading-snug text-paper/80 sm:mt-4 sm:text-[15px]">{o.label}</dd>
+                <dd className="mt-auto pt-5 text-[12.5px] text-[#e9a989]">{o.context}</dd>
+              </Reveal>
+            ))}
+          </dl>
+
+          <div className="mt-14 grid gap-12 lg:grid-cols-[1.6fr_1fr]">
+            <Reveal>
+              <p className="text-[13px] font-medium text-paper/45">Career path</p>
+              <ol className="mt-5 grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-5">
+                {careerPath.map((c, i) => (
+                  <li key={c.org}>
+                    <span className="flex items-center gap-2">
+                      <span className={`h-2 w-2 rounded-full ${i === careerPath.length - 1 ? "bg-[#e9a989]" : "bg-paper/35"}`} aria-hidden />
+                      <span className="font-mono text-[12px] text-paper/45">{c.year}</span>
+                    </span>
+                    <span className="mt-2 block text-[15.5px] font-medium text-paper">{c.org}</span>
+                    <span className="block text-[13px] leading-snug text-paper/55">{c.role}</span>
+                  </li>
+                ))}
+              </ol>
+            </Reveal>
+            <Reveal delay={120}>
+              <p className="text-[13px] font-medium text-paper/45">Recognition</p>
+              <ul className="mt-5 space-y-3">
+                {recognition.map((r) => (
+                  <li key={r.title + r.org} className="flex items-baseline justify-between gap-4 border-b border-paper/10 pb-3 text-[15px]">
+                    <span className="text-paper">
+                      {r.title} <span className="text-paper/50">· {r.org}</span>
+                    </span>
+                    <span className="font-mono text-[12px] text-paper/45">{r.year}</span>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* 2 — SNAPSHOT */}
-      <Section>
-        <div className="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
-          <div>
-            <p className="eyebrow mb-4 flex items-center gap-2"><span className="inline-block h-px w-6 bg-accent" />Professional snapshot</p>
-            <h2 className="display text-[2.1rem] leading-[1.1] text-ink sm:text-[2.6rem]">
-              Where enterprise technology, delivery and business meet.
-            </h2>
-            <p className="mt-6 text-[17px] leading-relaxed text-ink-3">{profile.shortBio}</p>
-            <TextLink href="/about" className="mt-7">More about my journey</TextLink>
+      {/* ───────────────────────── 3 · WHAT I DO ───────────────────────── */}
+      <section className="py-20 sm:py-28 lg:py-32">
+        <div className="container-x">
+          <SectionHeader
+            eyebrow="What I do"
+            title="Six areas where I add the most value"
+            intro="Each explained in plain terms — for technical and non-technical readers alike."
+            action={<TextLink href="/about">My full background</TextLink>}
+          />
+          <div className="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+            {capabilities.map(({ Icon, title, plain, proof, href }, i) => (
+              <Reveal key={title} delay={(i % 3) * 70} className="h-full">
+                <Link href={href} className="group flex h-full flex-col bg-surface p-7 transition-colors hover:bg-paper sm:p-8">
+                  <span className="flex items-center justify-between">
+                    <span className="grid h-10 w-10 place-items-center rounded-lg border border-line text-ink transition-colors group-hover:border-accent group-hover:text-accent-ink">
+                      <Icon size={20} />
+                    </span>
+                    <span className="font-mono text-[12px] text-faint">0{i + 1}</span>
+                  </span>
+                  <h3 className="mt-6 text-[18px] font-semibold tracking-[-0.01em] text-ink">{title}</h3>
+                  <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{plain}</p>
+                  <p className="mt-auto flex items-start gap-2 pt-6 text-[13px] leading-snug text-ink-3">
+                    <Check size={14} className="mt-0.5 shrink-0 text-accent" />
+                    {proof}
+                  </p>
+                </Link>
+              </Reveal>
+            ))}
           </div>
-          <div>
-            <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line">
-              {outcomes.map((o) => (
-                <div key={o.label} className="bg-surface p-5 sm:p-7">
-                  <dt className="sr-only">{o.label}</dt>
-                  <dd>
-                    <span className="display block text-[2rem] leading-none text-ink sm:text-[2.6rem]">{o.value}</span>
-                    <span className="mt-3 block text-[14px] leading-snug text-muted">{o.label}</span>
-                  </dd>
-                </div>
+        </div>
+      </section>
+
+      {/* ───────────────────────── 4 · FEATURED PROJECTS ───────────────────────── */}
+      <section className="border-t border-line bg-paper-2/60 py-20 sm:py-28 lg:py-32">
+        <div className="container-x">
+          <SectionHeader
+            eyebrow="Selected work"
+            title="Things I've built and delivered"
+            intro="A product I designed and shipped, the programmes I led, and the research behind them."
+            action={<ButtonLink href="/projects" variant="secondary" arrow>All projects</ButtonLink>}
+          />
+          <div className="space-y-6">
+            {flagship.map((p, i) => (
+              <Reveal key={p.slug}>
+                <ProjectFeature project={p} reverse={i % 2 === 1} priority={i === 0} />
+              </Reveal>
+            ))}
+          </div>
+          {secondary.length > 0 && (
+            <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {secondary.map((p, i) => (
+                <Reveal key={p.slug} delay={i * 80} className="h-full">
+                  <ProjectCard project={p} />
+                </Reveal>
               ))}
-            </dl>
-            <p className="mt-3 font-mono text-[11px] text-faint">Figures from professional roles at BT and HCLTech.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ───────────────────────── 5 · CONSULTING ───────────────────────── */}
+      <section className="bg-night text-paper">
+        <div className="container-x py-20 sm:py-28 lg:py-32">
+          <SectionHeader
+            dark
+            eyebrow="Consulting"
+            title={<>Technology &amp; programme advice, <span className="italic text-[#e9a989]">grounded in delivery.</span></>}
+            intro="For IT leaders, PMOs and growing organisations planning network, infrastructure, operations or AI initiatives."
+          />
+          <div className="grid gap-px overflow-hidden rounded-xl border border-paper/10 bg-paper/10 lg:grid-cols-3">
+            <Reveal className="bg-night p-7 sm:p-9">
+              <p className="text-[13px] font-medium text-paper/45">Problems I solve</p>
+              <ul className="mt-5 space-y-4">
+                {problems.map((t) => (
+                  <li key={t} className="text-[15.5px] leading-snug text-paper/85">{t}</li>
+                ))}
+              </ul>
+            </Reveal>
+            <Reveal delay={80} className="bg-night p-7 sm:p-9">
+              <p className="text-[13px] font-medium text-paper/45">Services</p>
+              <ul className="mt-4 divide-y divide-paper/10">
+                {consultingServices.slice(0, 6).map((s) => (
+                  <li key={s.slug}>
+                    <Link href={`/consulting#${s.slug}`} className="group flex items-center justify-between gap-4 py-2.5 text-[15.5px] text-paper">
+                      {s.title}
+                      <ArrowRight size={15} className="shrink-0 text-paper/30 transition-all group-hover:translate-x-0.5 group-hover:text-[#e9a989]" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+            <Reveal delay={160} className="bg-night p-7 sm:p-9">
+              <p className="text-[13px] font-medium text-paper/45">What you can expect</p>
+              <ul className="mt-5 space-y-4">
+                {outcomesExpect.map((t) => (
+                  <li key={t} className="flex gap-3 text-[15.5px] leading-snug text-paper/85">
+                    <Check size={16} className="mt-0.5 shrink-0 text-[#e9a989]" /> {t}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <ButtonLink href="/consulting#enquire" variant="light" size="lg" arrow>Discuss your project</ButtonLink>
+            <ButtonLink href="/consulting" variant="outline-light" size="lg">How engagements work</ButtonLink>
           </div>
         </div>
+      </section>
 
-        {/* The intersection */}
-        <div className="mt-20">
-          <p className="eyebrow mb-5">The intersection I work in</p>
-          <ol className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-5">
-            {pillars.map((p, i) => (
-              <li key={p.k} className="bg-paper p-5 transition-colors hover:bg-surface">
-                <span className="font-mono text-[11px] text-accent">0{i + 1}</span>
-                <p className="mt-2 text-[17px] font-semibold tracking-tight text-ink">{p.k}</p>
-                <p className="mt-1 text-[13.5px] leading-snug text-muted">{p.v}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </Section>
-
-      {/* 3 — EXPERTISE */}
-      <Section tone="surface">
-        <SectionHeader
-          eyebrow="Areas of expertise"
-          title="What I know — and where I can help"
-          intro="Six years across enterprise infrastructure, programme delivery and technology operations, with a business education and a growing focus on AI."
-        />
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {expertise.map(({ Icon, title, body }) => (
-            <div key={title} className="card card-hover p-7">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-paper text-ink">
-                <Icon size={22} />
-              </span>
-              <h3 className="mt-5 text-[18px] font-semibold tracking-tight text-ink">{title}</h3>
-              <p className="mt-2.5 text-[15px] leading-relaxed text-muted">{body}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* 4 — FEATURED PROJECTS */}
-      <Section>
-        <SectionHeader
-          eyebrow="Featured work"
-          title="Projects & programmes"
-          intro="Selected professional programmes, research and builds. Client names are kept confidential."
-          action={<ButtonLink href="/projects" variant="secondary" arrow>All projects</ButtonLink>}
-        />
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {featuredProjects.map((p) => (
-            <ProjectCard key={p.slug} project={p} />
-          ))}
-        </div>
-      </Section>
-
-      {/* 5 — CONSULTING */}
-      <Section tone="ink">
-        <div className="grid gap-14 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
-          <div>
-            <p className="eyebrow mb-4 flex items-center gap-2 text-paper/55"><span className="inline-block h-px w-6 bg-accent" />Consulting</p>
-            <h2 className="display text-[2.2rem] leading-[1.08] text-paper sm:text-[2.8rem]">
-              Technology &amp; project management solutions
-            </h2>
-            <p className="mt-6 max-w-lg text-[17px] leading-relaxed text-paper/70">
-              I help organisations understand, plan and execute technology initiatives — from network and infrastructure transformation to governance, AIOps and technology strategy.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <ButtonLink href="/consulting#enquire" variant="light" size="lg" arrow>Discuss your project</ButtonLink>
-              <ButtonLink href="/consulting" size="lg" className="border-paper/20 bg-transparent text-paper hover:bg-paper/10">
-                View services
-              </ButtonLink>
-            </div>
-          </div>
-          <ul className="divide-y divide-paper/10 border-y border-paper/10">
-            {consultingServices.slice(0, 6).map((s) => (
-              <li key={s.slug}>
-                <Link href={`/consulting#${s.slug}`} className="group flex items-start justify-between gap-6 py-5">
-                  <span>
-                    <span className="block text-[17px] font-medium text-paper">{s.title}</span>
-                    <span className="mt-1 block text-[14.5px] text-paper/55">{s.short}</span>
-                  </span>
-                  <ArrowRight size={18} className="mt-1 shrink-0 text-paper/40 transition-all group-hover:translate-x-1 group-hover:text-accent" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
-
-      {/* 6 — MENTORING */}
-      <Section>
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
-          <div>
-            <p className="eyebrow mb-4 flex items-center gap-2"><span className="inline-block h-px w-6 bg-accent" />Career mentoring</p>
-            <h2 className="display text-[2.1rem] leading-[1.08] text-ink sm:text-[2.6rem]">Build a better technology career</h2>
-            <p className="mt-6 text-[17px] leading-relaxed text-ink-3">
-              I moved from engineering into project management, then into an MBA and technology leadership. If you're planning a similar path — or just your next role — I can help you get there with a clear plan.
-            </p>
+      {/* ───────────────────────── 6 · MENTORING ───────────────────────── */}
+      <section className="py-20 sm:py-28 lg:py-32">
+        <div className="container-x grid gap-14 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
+          <Reveal>
+            <p className="eyebrow mb-5">Career mentoring</p>
+            <h2 className="display text-[2.15rem] leading-[1.06] text-ink sm:text-[2.9rem]">Build a better technology career</h2>
+            <figure className="mt-8 rounded-xl border border-line bg-surface p-6">
+              <blockquote className="display text-[1.3rem] leading-[1.35] text-ink">
+                “I moved from engineering into project management, through an MBA and into technology leadership — and I remember what
+                was confusing along the way. Mentoring is how I make that path clearer for others.”
+              </blockquote>
+              <figcaption className="mt-5 flex items-center gap-3">
+                <Image src={siteConfig.portraitSquare} alt="" width={44} height={44} className="rounded-full border border-line" />
+                <span className="text-[14px]">
+                  <span className="block font-medium text-ink">Rupesh Kumar</span>
+                  <span className="block text-muted">One-to-one sessions over video</span>
+                </span>
+              </figcaption>
+            </figure>
             <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/mentoring#book" arrow>Book a session</ButtonLink>
-              <ButtonLink href="/mentoring" variant="secondary">How mentoring works</ButtonLink>
+              <ButtonLink href="/mentoring#book" size="lg" arrow>Book a session</ButtonLink>
+              <ButtonLink href="/mentoring#packages" size="lg" variant="secondary">{mentoringPackages.length} session formats</ButtonLink>
+            </div>
+          </Reveal>
+          <Reveal delay={100}>
+            <ol className="border-b border-line">
+              {mentoringTopics.map((t, i) => (
+                <li key={t.title} className="grid grid-cols-[2.5rem_1fr] gap-x-4 border-t border-line py-6">
+                  <span className="font-mono text-[12.5px] text-accent">0{i + 1}</span>
+                  <span>
+                    <span className="block text-[17.5px] font-semibold tracking-[-0.01em] text-ink">{t.title}</span>
+                    <span className="mt-1 block text-[15px] text-muted">{t.detail}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ───────────────────────── 7 · TECH HUB ───────────────────────── */}
+      {featureArticle && (
+        <section className="border-t border-line bg-surface py-20 sm:py-28 lg:py-32">
+          <div className="container-x">
+            <SectionHeader
+              eyebrow="Tech Hub"
+              title="Research, explainers and field notes"
+              intro="Networking, programme delivery, AI and careers — written for practitioners and the leaders they report to."
+              action={<ButtonLink href="/hub" variant="secondary" arrow>Visit the Tech Hub</ButtonLink>}
+            />
+            <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-12">
+              <Reveal className="h-full">
+                <ArticleCard article={featureArticle} variant="feature" />
+              </Reveal>
+              <Reveal delay={100}>
+                <div className="border-b border-line">
+                  {recent.map((a) => (
+                    <ArticleCard key={a.slug} article={a} variant="compact" />
+                  ))}
+                </div>
+                {topics.length > 0 && (
+                  <div className="mt-7">
+                    <p className="text-[13px] font-medium text-muted">Browse by topic</p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {topics.map((t) => (
+                        <Link
+                          key={t}
+                          href={`/hub?topic=${encodeURIComponent(t)}`}
+                          className="rounded-full border border-line-strong px-3 py-1 text-[13px] text-ink-3 transition-colors hover:border-ink hover:text-ink"
+                        >
+                          {t}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </Reveal>
             </div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {mentoringPackages.map((p) => (
-              <div key={p.name} className="card p-6">
-                <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-faint">{p.duration}</p>
-                <p className="mt-2 text-[17px] font-semibold tracking-tight text-ink">{p.name}</p>
-                <p className="mt-1.5 text-[14.5px] text-muted">{p.bestFor}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* 7 — LATEST CONTENT */}
-      {latestArticles.length > 0 && (
-        <Section tone="surface">
-          <SectionHeader
-            eyebrow="Tech Hub"
-            title="Latest writing"
-            intro="Explainers, guides and lessons from the field — networking, project management, AI and careers."
-            action={<ButtonLink href="/hub" variant="secondary" arrow>Visit the Tech Hub</ButtonLink>}
-          />
-          <div className="grid gap-6 md:grid-cols-3">
-            {latestArticles.map((a) => (
-              <ArticleCard key={a.slug} article={a} />
-            ))}
-          </div>
-        </Section>
+        </section>
       )}
 
-      {/* 8 — CASE STUDIES */}
-      {caseStudies.projects.length > 0 && (
-        <Section>
-          <SectionHeader
-            eyebrow="Case studies"
-            title="How the work actually gets done"
-            action={<ButtonLink href="/case-studies" variant="secondary" arrow>All case studies</ButtonLink>}
-          />
-          <ul className="border-t border-line">
-            {caseStudies.projects.slice(0, 3).map((p, i) => (
-              <li key={p.slug} className="border-b border-line">
-                <Link href={`/projects/${p.slug}`} className="group grid gap-3 py-8 sm:grid-cols-[80px_1fr_auto] sm:items-center sm:gap-8">
-                  <span className="font-mono text-sm text-accent">0{i + 1}</span>
-                  <span>
-                    <span className="block text-[21px] font-semibold tracking-tight text-ink transition-colors group-hover:text-accent-ink sm:text-[24px]">{p.title}</span>
-                    <span className="mt-1.5 block max-w-2xl text-[15px] text-muted">{p.summary}</span>
-                  </span>
-                  <span className="hidden items-center gap-2 font-mono text-[12px] text-faint sm:flex">
-                    {p.category}
-                    <ArrowRight size={16} className="text-ink transition-transform group-hover:translate-x-1" />
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Section>
-      )}
-
-      {/* 9 — RESOURCES */}
-      {featuredResources.length > 0 && (
-        <Section tone="paper-2">
-          <SectionHeader
-            eyebrow="Free resources"
-            title="Templates & checklists I actually use"
-            action={<ButtonLink href="/resources" variant="secondary" arrow>Resource library</ButtonLink>}
-          />
-          <div className="grid gap-6 md:grid-cols-3">
-            {featuredResources.map((r) => (
-              <ResourceCard key={r.slug} resource={r} />
-            ))}
+      {/* ───────────────────────── 8 · RESOURCES ───────────────────────── */}
+      {topResources.length > 0 && (
+        <section className="py-20 sm:py-28">
+          <div className="container-x grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] lg:gap-20">
+            <Reveal>
+              <p className="eyebrow mb-5">Resources</p>
+              <h2 className="display text-[2.15rem] leading-[1.06] text-ink sm:text-[2.7rem]">Templates and reports I actually use</h2>
+              <p className="mt-5 max-w-sm text-[16px] leading-relaxed text-muted">
+                Free to download and adapt — from a RAID log to a 44-page vendor market analysis.
+              </p>
+              <TextLink href="/resources" className="mt-7">Open the resource library</TextLink>
+            </Reveal>
+            <Reveal delay={100} className="min-w-0 border-b border-line">
+              {topResources.map((r) => (
+                <ResourceRow key={r.slug} resource={r} />
+              ))}
+            </Reveal>
           </div>
-        </Section>
+        </section>
       )}
 
-      {/* 10 — TESTIMONIALS (only rendered once real testimonials are added in content/profile.ts) */}
+      {/* ───────────── Testimonials (shown only when real ones are added) ───────────── */}
       {testimonials.length > 0 && (
-        <Section>
-          <SectionHeader eyebrow="Recommendations" title="What people say" />
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((t) => (
-              <figure key={t.name} className="card p-7">
-                <blockquote className="display text-[1.25rem] leading-snug text-ink">“{t.quote}”</blockquote>
-                <figcaption className="mt-5 text-[14px] text-muted">
-                  <span className="font-medium text-ink">{t.name}</span> · {t.title}
-                  {t.company ? `, ${t.company}` : ""}
-                </figcaption>
-              </figure>
-            ))}
+        <section className="border-t border-line py-20 sm:py-28">
+          <div className="container-x">
+            <SectionHeader eyebrow="Recommendations" title="What people say" />
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {testimonials.map((t) => (
+                <figure key={t.name} className="card p-7">
+                  <blockquote className="display text-[1.25rem] leading-snug text-ink">“{t.quote}”</blockquote>
+                  <figcaption className="mt-5 text-[14px] text-muted">
+                    <span className="font-medium text-ink">{t.name}</span> · {t.title}
+                    {t.company ? `, ${t.company}` : ""}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
-        </Section>
+        </section>
       )}
 
-      {/* 11 — CONTACT CTA */}
+      {/* ───────────────────────── 9 · CONTACT ───────────────────────── */}
       <ContactBand />
     </>
   );

@@ -7,6 +7,8 @@ import { PageHero, Section, SectionHeader, ButtonLink } from "@/components/ui";
 import { ProjectExplorer } from "@/components/projects/project-explorer";
 import { GitHub, Star } from "@/components/icons";
 import { ContactBand } from "@/components/contact-band";
+import { ProjectFeature } from "@/components/cards";
+import { Reveal } from "@/components/motion/reveal";
 import { formatDate } from "@/lib/utils";
 
 export const revalidate = 300;
@@ -20,14 +22,45 @@ export const metadata: Metadata = pageMetadata({
 
 export default async function ProjectsPage() {
   const [projects, repos] = await Promise.all([getProjects(), getRepos(6)]);
+  const featured = ["travel-os", "multi-site-network-modernisation"]
+    .map((s) => projects.find((p) => p.slug === s))
+    .filter(Boolean) as typeof projects;
   return (
     <>
       <PageHero
         eyebrow="Projects"
-        title="Programmes, research & things I've built"
-        intro="A growing repository of professional programmes, academic work, applications and experiments. Filter by category, technology, year or type."
+        title="Programmes I've led, products I've built, research I've done"
+        intro="Enterprise programmes delivered at BT and HCLTech, products I design and ship myself, and the research behind my work. Client names are kept confidential."
+        aside={
+          <dl className="grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line">
+            {[
+              [String(projects.length), "projects"],
+              [String(projects.filter((p) => p.is_case_study).length), "case studies"],
+              [String(projects.filter((p) => p.demo_url).length), "live builds"],
+            ].map(([v, l]) => (
+              <div key={l} className="bg-surface p-5">
+                <dt className="sr-only">{l}</dt>
+                <dd className="display text-[2rem] leading-none text-ink">{v}</dd>
+                <dd className="mt-2 text-[13px] text-muted">{l}</dd>
+              </div>
+            ))}
+          </dl>
+        }
       />
-      <Section>
+      {featured.length > 0 && (
+        <Section tone="paper-2" className="!pb-0 !pt-14 sm:!pt-16">
+          <p className="eyebrow mb-6">Featured</p>
+          <div className="space-y-6">
+            {featured.map((p, i) => (
+              <Reveal key={p.slug}>
+                <ProjectFeature project={p} reverse={i % 2 === 1} priority={i === 0} />
+              </Reveal>
+            ))}
+          </div>
+        </Section>
+      )}
+      <Section tone="paper-2" className="!pt-14">
+        <p className="eyebrow mb-6">All projects</p>
         <ProjectExplorer projects={projects} />
       </Section>
 
@@ -65,7 +98,7 @@ export default async function ProjectsPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-line-strong px-6 py-10 text-center text-muted">
+          <div className="rounded-xl border border-dashed border-line-strong px-6 py-10 text-center text-muted">
             Public repositories will appear here automatically as I publish them.{" "}
             <a href={siteConfig.socials.github} target="_blank" rel="noopener noreferrer" className="link-underline text-ink">Follow on GitHub</a>
           </div>

@@ -21,7 +21,7 @@ export default function ResumePage() {
       <article className="card p-7 sm:p-12">
         <header className="border-b border-line pb-8">
           <h1 className="display text-[2.6rem] leading-none text-ink">{profile.name}</h1>
-          <p className="mt-3 font-mono text-[12px] uppercase tracking-[0.14em] text-accent-ink">Technology Transformation &amp; Consulting Professional</p>
+          <p className="mt-3 text-[14px] font-medium text-accent-ink">Technology Transformation &amp; Programme Leadership</p>
           <p className="mt-4 text-[15px] text-muted">
             <a href={`mailto:${siteConfig.email}`} className="link-underline">{siteConfig.email}</a> ·{" "}
             <a href={siteConfig.socials.linkedin} className="link-underline" target="_blank" rel="noopener noreferrer">LinkedIn</a> · {siteConfig.location}
@@ -29,12 +29,12 @@ export default function ResumePage() {
         </header>
 
         <section className="border-b border-line py-8">
-          <h2 className="eyebrow mb-3">Summary</h2>
+          <h2 className="mb-3 text-[13px] font-semibold text-accent-ink">Summary</h2>
           <p className="text-[15.5px] leading-relaxed text-ink-2">{profile.shortBio}</p>
         </section>
 
         <section className="border-b border-line py-8">
-          <h2 className="eyebrow mb-5">Experience</h2>
+          <h2 className="mb-5 text-[13px] font-semibold text-accent-ink">Experience</h2>
           <div className="space-y-8">
             {experience.map((e) => (
               <div key={e.company}>
@@ -53,7 +53,7 @@ export default function ResumePage() {
 
         <section className="grid gap-8 border-b border-line py-8 sm:grid-cols-2">
           <div>
-            <h2 className="eyebrow mb-4">Education</h2>
+            <h2 className="mb-4 text-[13px] font-semibold text-accent-ink">Education</h2>
             <ul className="space-y-3">
               {education.map((ed) => (
                 <li key={ed.school}>
@@ -64,7 +64,7 @@ export default function ResumePage() {
             </ul>
           </div>
           <div>
-            <h2 className="eyebrow mb-4">Certifications</h2>
+            <h2 className="mb-4 text-[13px] font-semibold text-accent-ink">Certifications</h2>
             <ul className="space-y-1.5 text-[14.5px] text-ink-2">
               {certifications.map((c) => <li key={c.name}>{c.name}</li>)}
             </ul>
@@ -72,7 +72,7 @@ export default function ResumePage() {
         </section>
 
         <section className="pt-8">
-          <h2 className="eyebrow mb-4">Capabilities</h2>
+          <h2 className="mb-4 text-[13px] font-semibold text-accent-ink">Capabilities</h2>
           <dl className="space-y-3">
             {skillGroups.map((g) => (
               <div key={g.title} className="grid gap-1 sm:grid-cols-[200px_1fr]">

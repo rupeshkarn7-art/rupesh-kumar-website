@@ -1,5 +1,13 @@
+import Link from "next/link";
 import { siteConfig } from "@/lib/site";
-import { ButtonLink } from "@/components/ui";
+import { ArrowRight, Mail } from "@/components/icons";
+import { Reveal } from "@/components/motion/reveal";
+
+const routes = [
+  { label: "Consulting", detail: "A technology or programme initiative", href: "/consulting#enquire" },
+  { label: "Career mentoring", detail: "A one-to-one session", href: "/mentoring#book" },
+  { label: "Anything else", detail: "Collaboration, speaking, a question", href: "/contact" },
+];
 
 export function ContactBand({
   title = "Have a technology initiative, a project, or a career question?",
@@ -10,23 +18,38 @@ export function ContactBand({
 }) {
   return (
     <section className="border-t border-line bg-paper">
-      <div className="container-x py-20 sm:py-24">
-        <div className="relative overflow-hidden rounded-[28px] border border-line bg-surface px-7 py-12 sm:px-14 sm:py-16">
-          <div className="grid-lines pointer-events-none absolute inset-0 opacity-70 [mask-image:linear-gradient(to_left,black,transparent_70%)]" aria-hidden />
-          <div className="relative grid items-end gap-10 lg:grid-cols-[1.6fr_1fr]">
-            <div>
-              <p className="eyebrow mb-4 flex items-center gap-2"><span className="inline-block h-px w-6 bg-accent" />Let&apos;s talk</p>
-              <h2 className="display text-[2rem] leading-[1.1] text-ink sm:text-[2.6rem]">{title}</h2>
-              <p className="mt-4 max-w-xl text-[17px] text-muted">{intro}</p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-stretch">
-              <ButtonLink href="/contact" size="lg" arrow>Get in touch</ButtonLink>
-              <ButtonLink href={`mailto:${siteConfig.email}`} size="lg" variant="secondary">
-                {siteConfig.email}
-              </ButtonLink>
-            </div>
+      <div className="container-x py-20 sm:py-28">
+        <Reveal className="grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:items-end lg:gap-20">
+          <div>
+            <p className="eyebrow mb-5">Let&apos;s talk</p>
+            <h2 className="display text-[2.2rem] leading-[1.06] text-ink sm:text-[3rem]">{title}</h2>
+            <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-muted">{intro}</p>
+            <a
+              href={`mailto:${siteConfig.email}`}
+              className="mt-8 inline-flex items-center gap-2.5 text-[16px] font-medium text-ink"
+            >
+              <Mail size={18} className="text-accent" />
+              <span className="link-underline">{siteConfig.email}</span>
+            </a>
           </div>
-        </div>
+          <ul className="border-b border-line">
+            {routes.map((r) => (
+              <li key={r.href}>
+                <Link href={r.href} className="group flex items-center justify-between gap-6 border-t border-line py-5">
+                  <span>
+                    <span className="block text-[18px] font-semibold tracking-[-0.01em] text-ink transition-colors group-hover:text-accent-ink">
+                      {r.label}
+                    </span>
+                    <span className="mt-0.5 block text-[14.5px] text-muted">{r.detail}</span>
+                  </span>
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line-strong text-ink transition-all group-hover:border-ink group-hover:bg-ink group-hover:text-paper">
+                    <ArrowRight size={16} />
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
       </div>
     </section>
   );

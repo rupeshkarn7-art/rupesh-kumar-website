@@ -34,7 +34,7 @@ function VideoCard({ video, large }: { video: Video; large?: boolean }) {
       {embedUrl ? (
         <VideoEmbed embedUrl={embedUrl} thumbnail={thumb} title={video.title} />
       ) : (
-        <a href={video.video_url} target="_blank" rel="noopener noreferrer" className="grid aspect-video place-items-center rounded-2xl border border-line bg-ink text-paper">
+        <a href={video.video_url} target="_blank" rel="noopener noreferrer" className="grid aspect-video place-items-center rounded-xl border border-line bg-ink text-paper">
           <span className="inline-flex items-center gap-2 text-[15px]">Watch on {video.platform === "other" ? "external site" : video.platform} <ArrowUpRight size={16} /></span>
         </a>
       )}
@@ -93,7 +93,7 @@ export default async function VlogsPage() {
             <p className="eyebrow mb-3">Coming soon</p>
             <h2 className="display text-[2rem] text-ink">The first videos are in production.</h2>
             <p className="mt-3 max-w-xl text-muted">Here&apos;s what the channel will cover. Follow on LinkedIn to catch the first episode.</p>
-            <ul className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
+            <ul className="mt-10 grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
               {VIDEO_SERIES.map((s, i) => (
                 <li key={s} className="bg-paper p-5">
                   <span className="font-mono text-[11px] text-accent">0{i + 1}</span>

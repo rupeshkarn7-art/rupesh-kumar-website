@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getCaseStudies } from "@/lib/data";
 import { pageMetadata } from "@/lib/seo";
-import { PageHero, Section, EmptyState, Badge } from "@/components/ui";
-import { ArticleCard, CoverArt } from "@/components/cards";
+import { PageHero, Section, EmptyState } from "@/components/ui";
+import { ArticleCard, ProjectMeta } from "@/components/cards";
+import { ProjectVisual } from "@/components/visuals";
 import { ArrowRight } from "@/components/icons";
 import { ContactBand } from "@/components/contact-band";
 
@@ -30,15 +31,14 @@ export default async function CaseStudiesPage() {
         <div className="space-y-6">
           {projects.map((p) => (
             <Link key={p.slug} href={`/projects/${p.slug}`} className="card card-hover group grid overflow-hidden md:grid-cols-[1fr_1.3fr]">
-              <CoverArt seed={p.slug} label={p.category} className="min-h-[220px]" />
+              <div className="relative aspect-[16/10] md:aspect-auto md:min-h-[300px]">
+                <ProjectVisual project={p} />
+              </div>
               <div className="flex flex-col p-7 sm:p-10">
-                <div className="flex flex-wrap gap-2">
-                  <Badge tone="accent">{p.category}</Badge>
-                  {p.year && <Badge>{String(p.year)}</Badge>}
-                </div>
-                <h2 className="mt-5 text-[24px] font-semibold leading-tight tracking-tight text-ink group-hover:text-accent-ink sm:text-[28px]">{p.title}</h2>
+                <ProjectMeta project={p} />
+                <h2 className="display mt-4 text-[1.8rem] leading-[1.1] text-ink transition-colors group-hover:text-accent-ink sm:text-[2.1rem]">{p.title}</h2>
                 <p className="mt-3 text-[16px] leading-relaxed text-muted">{p.summary}</p>
-                {p.role && <p className="mt-4 font-mono text-[12px] text-faint">Role: {p.role}</p>}
+                {p.role && <p className="mt-4 text-[14px] text-muted"><span className="text-ink-2">Role:</span> {p.role}</p>}
                 <span className="mt-auto inline-flex items-center gap-2 pt-6 text-[15px] font-medium text-ink">
                   Read the case study <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                 </span>

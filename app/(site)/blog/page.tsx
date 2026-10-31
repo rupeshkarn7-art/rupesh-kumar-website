@@ -36,7 +36,7 @@ export default async function BlogPage() {
                   <li key={a.slug}>
                     <Link href={`/hub/${a.slug}`} className="group grid gap-2 py-6 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-10">
                       <span>
-                        <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-accent-ink">{a.category} · {a.content_type}</span>
+                        <span className="text-[12.5px] font-medium text-accent-ink">{a.category} · {a.content_type}</span>
                         <span className="mt-1.5 block text-[20px] font-semibold tracking-tight text-ink group-hover:text-accent-ink">{a.title}</span>
                         <span className="mt-1.5 block max-w-2xl text-[15px] text-muted">{a.excerpt}</span>
                       </span>

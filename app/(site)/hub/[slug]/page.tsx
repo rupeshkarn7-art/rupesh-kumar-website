@@ -127,7 +127,7 @@ export default async function ArticlePage({ params }: Props) {
               ))}
             </ul>
           )}
-          <div className="mt-8 flex flex-col gap-5 rounded-2xl border border-line bg-surface p-6 sm:flex-row sm:items-center">
+          <div className="mt-8 flex flex-col gap-5 rounded-xl border border-line bg-surface p-6 sm:flex-row sm:items-center">
             <Image src={siteConfig.portraitSquare} alt="" width={64} height={64} className="rounded-full border border-line" />
             <div className="flex-1">
               <p className="font-medium text-ink">Written by Rupesh Kumar</p>
@@ -141,7 +141,7 @@ export default async function ArticlePage({ params }: Props) {
         {headings.length > 2 && (
           <aside className="hidden xl:block">
             <nav aria-label="Table of contents" className="sticky top-24">
-              <p className="eyebrow mb-3">Contents</p>
+              <p className="mb-3 text-[13px] font-medium text-muted">Contents</p>
               <ul className="space-y-1.5 border-l border-line">
                 {headings.map((h) => (
                   <li key={h.id}>

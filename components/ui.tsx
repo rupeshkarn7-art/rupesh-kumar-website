@@ -2,28 +2,30 @@ import NextLink from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "@/components/icons";
+import { Reveal } from "@/components/motion/reveal";
 
 /* ------------------------------------------------------------------ */
 /* Buttons                                                             */
 /* ------------------------------------------------------------------ */
 
-type Variant = "primary" | "secondary" | "ghost" | "accent" | "light";
+type Variant = "primary" | "secondary" | "ghost" | "accent" | "light" | "outline-light";
 const variants: Record<Variant, string> = {
-  primary: "bg-ink text-paper hover:bg-ink-2 border border-ink",
-  accent: "bg-accent text-white hover:bg-accent-ink border border-accent",
+  primary: "bg-ink text-paper border border-ink shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_6px_16px_-10px_rgba(11,23,38,0.7)] hover:bg-ink-2",
+  accent: "bg-accent text-white border border-accent hover:bg-accent-ink",
   secondary: "bg-surface text-ink border border-line-strong hover:border-ink",
-  ghost: "text-ink hover:bg-paper-2 border border-transparent",
+  ghost: "text-ink border border-transparent hover:bg-paper-2",
   light: "bg-paper text-ink border border-paper hover:bg-white",
+  "outline-light": "bg-transparent text-paper border border-paper/25 hover:border-paper/60 hover:bg-paper/5",
 };
 const sizes = {
-  sm: "h-9 px-3.5 text-sm gap-1.5",
+  sm: "h-9 px-3.5 text-[13.5px] gap-1.5",
   md: "h-11 px-5 text-[15px] gap-2",
   lg: "h-12 px-6 text-[15px] gap-2",
 };
 
 export function buttonClass(variant: Variant = "primary", size: keyof typeof sizes = "md", className?: string) {
   return cn(
-    "inline-flex select-none items-center justify-center rounded-full font-medium transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50",
+    "inline-flex select-none items-center justify-center whitespace-nowrap rounded-lg font-medium transition-[background-color,border-color,color,transform] duration-200 active:translate-y-px disabled:pointer-events-none disabled:opacity-50",
     variants[variant],
     sizes[size],
     className,
@@ -83,10 +85,10 @@ export function Section({
     paper: "bg-paper",
     "paper-2": "bg-paper-2",
     surface: "bg-surface border-y border-line",
-    ink: "bg-ink text-paper",
+    ink: "bg-night text-paper",
   };
   return (
-    <section id={id} className={cn("py-20 sm:py-28", tones[tone], className)} {...rest}>
+    <section id={id} className={cn("py-20 sm:py-28 lg:py-32", tones[tone], className)} {...rest}>
       <div className="container-x">{children}</div>
     </section>
   );
@@ -108,22 +110,21 @@ export function SectionHeader({
   dark?: boolean;
 }) {
   return (
-    <div
+    <Reveal
       className={cn(
-        "mb-12 flex flex-col gap-6 sm:mb-14",
+        "mb-12 flex flex-col gap-6 sm:mb-16",
         align === "center" ? "items-center text-center" : "md:flex-row md:items-end md:justify-between",
       )}
     >
       <div className={cn("max-w-2xl", align === "center" && "mx-auto")}>
-        {eyebrow && <p className={cn("eyebrow mb-4 flex items-center gap-2", dark && "text-paper/60", align === "center" && "justify-center")}>
-          <span className="inline-block h-px w-6 bg-accent" aria-hidden />
-          {eyebrow}
-        </p>}
-        <h2 className={cn("display text-[2.1rem] leading-[1.08] sm:text-[2.75rem]", dark ? "text-paper" : "text-ink")}>{title}</h2>
-        {intro && <p className={cn("mt-4 text-[17px] leading-relaxed", dark ? "text-paper/70" : "text-muted")}>{intro}</p>}
+        {eyebrow && (
+          <p className={cn("eyebrow mb-5", dark && "eyebrow-dark")}>{eyebrow}</p>
+        )}
+        <h2 className={cn("display text-[2.15rem] leading-[1.06] sm:text-[2.9rem]", dark ? "text-paper" : "text-ink")}>{title}</h2>
+        {intro && <p className={cn("mt-5 max-w-xl text-[17px] leading-relaxed", dark ? "text-paper/65" : "text-muted")}>{intro}</p>}
       </div>
       {action && <div className="shrink-0">{action}</div>}
-    </div>
+    </Reveal>
   );
 }
 
@@ -132,23 +133,26 @@ export function PageHero({
   title,
   intro,
   children,
+  aside,
 }: {
   eyebrow: string;
   title: ReactNode;
   intro?: ReactNode;
   children?: ReactNode;
+  /** Optional right-hand column (facts, image, CTA) on large screens */
+  aside?: ReactNode;
 }) {
   return (
     <header className="relative overflow-hidden border-b border-line bg-paper">
-      <div className="grid-lines pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" aria-hidden />
-      <div className="container-x relative pb-14 pt-16 sm:pb-20 sm:pt-24">
-        <p className="eyebrow mb-5 flex items-center gap-2 animate-rise">
-          <span className="inline-block h-px w-6 bg-accent" aria-hidden />
-          {eyebrow}
-        </p>
-        <h1 className="display max-w-4xl text-[2.6rem] leading-[1.04] text-ink animate-rise sm:text-[3.6rem]">{title}</h1>
-        {intro && <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted animate-rise [animation-delay:80ms]">{intro}</p>}
-        {children && <div className="mt-8 animate-rise [animation-delay:140ms]">{children}</div>}
+      <div className="grid-lines pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_80%)]" aria-hidden />
+      <div className={cn("container-x relative pb-14 pt-14 sm:pb-20 sm:pt-20", aside && "grid gap-12 lg:grid-cols-[1.5fr_1fr] lg:items-end")}>
+        <div>
+          <p className="eyebrow mb-6 animate-rise">{eyebrow}</p>
+          <h1 className="display max-w-4xl text-[2.55rem] leading-[1.04] text-ink animate-rise sm:text-[3.5rem] lg:text-[3.9rem]">{title}</h1>
+          {intro && <p className="lede mt-6 max-w-2xl animate-rise [animation-delay:80ms]">{intro}</p>}
+          {children && <div className="mt-9 animate-rise [animation-delay:140ms]">{children}</div>}
+        </div>
+        {aside && <div className="animate-rise [animation-delay:160ms]">{aside}</div>}
       </div>
     </header>
   );
@@ -162,14 +166,14 @@ export function Badge({ children, tone = "default", className }: { children: Rea
     ok: "border-ok/20 bg-[#e6f2ea] text-ok",
   };
   return (
-    <span className={cn("inline-flex items-center rounded-full border px-2.5 py-0.5 font-mono text-[11px] tracking-wide", tones[tone], className)}>
+    <span className={cn("inline-flex items-center rounded-md border px-2 py-0.5 text-[12px] font-medium", tones[tone], className)}>
       {children}
     </span>
   );
 }
 
 export function Tag({ children }: { children: ReactNode }) {
-  return <span className="rounded-md bg-paper-2 px-2 py-0.5 text-[12.5px] text-ink-3">{children}</span>;
+  return <span className="rounded-md border border-line bg-paper px-2 py-0.5 text-[12.5px] text-ink-3">{children}</span>;
 }
 
 export function TextLink({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
@@ -183,7 +187,7 @@ export function TextLink({ href, children, className }: { href: string; children
 
 export function EmptyState({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <div className="rounded-2xl border border-dashed border-line-strong bg-surface/60 px-6 py-14 text-center">
+    <div className="rounded-xl border border-dashed border-line-strong bg-surface/60 px-6 py-14 text-center">
       <p className="display text-2xl text-ink">{title}</p>
       {children && <div className="mx-auto mt-3 max-w-md text-muted">{children}</div>}
     </div>

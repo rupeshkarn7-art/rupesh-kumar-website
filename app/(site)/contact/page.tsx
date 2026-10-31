@@ -27,6 +27,18 @@ export default function ContactPage() {
         eyebrow="Contact"
         title="Let's start a conversation"
         intro="Whether it's a technology initiative, a collaboration, a speaking invitation or a career question — send a note and I'll get back to you."
+        aside={
+          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line">
+            <div className="bg-surface p-5">
+              <dt className="text-[12.5px] text-faint">Typical reply</dt>
+              <dd className="mt-1.5 text-[16px] font-medium text-ink">Within 2 working days</dd>
+            </div>
+            <div className="bg-surface p-5">
+              <dt className="text-[12.5px] text-faint">Based in</dt>
+              <dd className="mt-1.5 text-[16px] font-medium text-ink">India · IST (UTC+5:30)</dd>
+            </div>
+          </dl>
+        }
       />
       <Section>
         <div className="grid gap-14 lg:grid-cols-[1fr_1.5fr] lg:gap-20">

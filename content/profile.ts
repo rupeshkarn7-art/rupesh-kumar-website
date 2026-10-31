@@ -24,7 +24,7 @@ export const profile = {
     "I started as an electrical and electronics engineer and moved quickly into enterprise IT infrastructure — the networks, data centres and operations that large organisations quietly depend on. At HCLTech I supported infrastructure delivery across the Nordics, including a wireless refresh of more than 5,000 access points and a time-service migration that touched almost every layer of the estate.",
     "At BT I stepped into the technical project manager role. I led a network modernisation programme across 200+ sites for a global logistics client, governed vulnerability remediation across 20,000+ LAN, WAN, WLAN and SD-WAN devices, and ran data-centre migrations involving Cisco and Fortinet platforms. The work taught me that most transformation risk isn't technical — it's in planning, dependencies, communication and the discipline to roll back when needed.",
     "While working full time I completed an MBA in General Management at IIM Lucknow, with an international immersion at IÉSEG School of Management in France. It sharpened how I think about business cases, cost, negotiation and strategy — and it's why I now look at every technology decision through both a delivery lens and a commercial one.",
-    "Today I'm a Technical Account Manager in Technology Operations at Accenture, translating business needs into coordinated technology priorities across infrastructure, data & voice, cloud and end-user services. Alongside that, I'm building, writing and mentoring — particularly around AI-enabled operations and helping engineers grow into project and technology leadership roles.",
+    "Today I'm a Technical Account Manager in Technology Operations at Accenture, translating business needs into coordinated technology priorities across infrastructure, data & voice, cloud and end-user services. Alongside that, I build products of my own — most recently Travel OS, a trip-planning app now live on the web — and write and mentor, particularly around AI-enabled operations and helping engineers grow into project and technology leadership roles.",
   ],
   interests: [
     "AI-enabled IT and network operations (AIOps)",
@@ -184,10 +184,26 @@ export const skillGroups = [
 
 /** Headline outcomes — taken from your resume. Edit or remove freely. */
 export const outcomes = [
-  { value: "200+", label: "sites in a network modernisation programme I led" },
-  { value: "20,000+", label: "network devices under remediation governance" },
-  { value: "5,000+", label: "access points migrated in a wireless refresh I supported" },
-  { value: "30%", label: "faster end-of-life transformation timeline after process redesign" },
+  { value: "200+", label: "sites in a network modernisation programme I led", context: "BT · global logistics client" },
+  { value: "20,000+", label: "network devices under security-remediation governance", context: "BT · LAN, WAN, WLAN & SD-WAN" },
+  { value: "5,000+", label: "access points migrated in a wireless refresh I supported", context: "HCLTech · Nordic regions" },
+  { value: "30%", label: "shorter end-of-life transformation timeline after process redesign", context: "BT · alongside a 25% cost reduction" },
+];
+
+/** Recognition — as listed on the resume. */
+export const recognition = [
+  { title: "Star Employee of the Year", org: "BT", year: "2024" },
+  { title: "Star Performer Award", org: "BT", year: "2025" },
+  { title: "Employee of the Year", org: "HCLTech", year: "2022" },
+];
+
+/** Compact career path for the homepage. */
+export const careerPath = [
+  { year: "2020", org: "MAIT", role: "B.Tech, Electrical & Electronics" },
+  { year: "2021", org: "HCLTech", role: "Infrastructure delivery" },
+  { year: "2022", org: "BT", role: "Technical Project Manager" },
+  { year: "2024", org: "IIM Lucknow", role: "Executive MBA" },
+  { year: "2026", org: "Accenture", role: "Technical Account Manager" },
 ];
 
 /**

@@ -2,7 +2,9 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
-import { certifications, education, experience, journey, profile, skillGroups } from "@/content/profile";
+import { certifications, education, experience, journey, outcomes, profile, skillGroups } from "@/content/profile";
+import { Reveal } from "@/components/motion/reveal";
+import { CountUp } from "@/components/motion/count-up";
 import { Badge, ButtonLink, PageHero, Section, SectionHeader } from "@/components/ui";
 import { Download, Check } from "@/components/icons";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -37,15 +39,20 @@ export default function AboutPage() {
       {/* Story */}
       <Section>
         <div className="grid gap-14 lg:grid-cols-[1.5fr_1fr] lg:gap-20">
-          <div className="space-y-6 text-[17.5px] leading-[1.75] text-ink-2">
-            <h2 className="display text-[2rem] leading-tight text-ink">My story</h2>
-            {profile.longBio.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
+          <div>
+            <p className="eyebrow mb-5">My story</p>
+            <div className="space-y-7">
+              {profile.longBio.map((p, i) => (
+                <Reveal key={i} delay={i * 60} className="grid gap-2 sm:grid-cols-[7.5rem_1fr] sm:gap-6">
+                  <p className="pt-1.5 text-[13px] font-medium text-muted">{["Foundations", "Delivery", "Business lens", "Today"][i] ?? ""}</p>
+                  <p className={i === 0 ? "display text-[1.45rem] leading-[1.5] text-ink" : "text-[17px] leading-[1.75] text-ink-2"}>{p}</p>
+                </Reveal>
+              ))}
+            </div>
           </div>
           <aside className="lg:pt-2">
             <div className="sticky top-24 space-y-6">
-              <div className="overflow-hidden rounded-2xl border border-line bg-[#f7f8f9]">
+              <div className="overflow-hidden rounded-xl border border-line bg-[#f4f5f6]">
                 <Image src={siteConfig.portraitSquare} alt="Rupesh Kumar" width={600} height={600} className="h-auto w-full" sizes="(min-width:1024px) 400px, 100vw" />
               </div>
               <dl className="card divide-y divide-line">
@@ -53,11 +60,11 @@ export default function AboutPage() {
                   ["Current role", `${profile.currentRole}, ${profile.currentCompany}`],
                   ["Direction", profile.direction],
                   ["Experience", `${profile.yearsExperience} years · IT & Telecom`],
-                  ["Education", "MBA, IIM Lucknow · B.Tech, MAIT"],
+                  ["Education", "Executive MBA, IIM Lucknow · B.Tech, MAIT"],
                   ["Based in", siteConfig.location],
                 ].map(([k, v]) => (
                   <div key={k} className="px-5 py-3.5">
-                    <dt className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-faint">{k}</dt>
+                    <dt className="text-[12.5px] text-faint">{k}</dt>
                     <dd className="mt-1 text-[15px] text-ink">{v}</dd>
                   </div>
                 ))}
@@ -67,12 +74,28 @@ export default function AboutPage() {
         </div>
       </Section>
 
+      {/* Proof points */}
+      <section className="bg-night text-paper">
+        <div className="container-x py-14 sm:py-16">
+          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-paper/10 bg-paper/10 lg:grid-cols-4">
+            {outcomes.map((o) => (
+              <div key={o.label} className="bg-night p-6">
+                <dt className="sr-only">{o.label}</dt>
+                <dd className="display text-[2.5rem] leading-none"><CountUp value={o.value} /></dd>
+                <dd className="mt-3 text-[14px] leading-snug text-paper/75">{o.label}</dd>
+                <dd className="mt-3 text-[12px] text-[#e9a989]">{o.context}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
       {/* Timeline */}
       <Section tone="surface">
         <SectionHeader eyebrow="Journey" title="How the pieces came together" />
         <ol className="relative ml-2 border-l border-line-strong">
           {journey.map((j, i) => (
-            <li key={j.title} className="relative pb-10 pl-8 last:pb-0 sm:pl-12">
+            <Reveal as="li" key={j.title} delay={i * 50} className="relative pb-10 pl-8 last:pb-0 sm:pl-12">
               <span
                 className={`absolute -left-[7px] top-1.5 h-3.5 w-3.5 rounded-full border-2 ${i === journey.length - 1 ? "border-accent bg-accent" : "border-ink bg-surface"}`}
                 aria-hidden
@@ -84,7 +107,7 @@ export default function AboutPage() {
                   <p className="mt-1.5 max-w-2xl text-[15.5px] leading-relaxed text-muted">{j.detail}</p>
                 </div>
               </div>
-            </li>
+            </Reveal>
           ))}
         </ol>
       </Section>
@@ -201,7 +224,7 @@ export default function AboutPage() {
       <Section tone="ink" id="resume">
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
           <div>
-            <p className="eyebrow mb-3 text-paper/55">Resume</p>
+            <p className="eyebrow eyebrow-dark mb-3">Resume</p>
             <h2 className="display text-[2.2rem] leading-tight text-paper">The full picture, on two pages.</h2>
             <p className="mt-3 max-w-xl text-paper/65">Experience, education, certifications and selected projects — in a format ready to share with your team.</p>
           </div>

@@ -6,6 +6,7 @@ import { ButtonLink, PageHero, Section, SectionHeader } from "@/components/ui";
 import { Check } from "@/components/icons";
 import { EnquiryForm } from "@/components/forms/enquiry-form";
 import { JsonLd } from "@/components/seo/json-ld";
+import { Reveal } from "@/components/motion/reveal";
 
 export const metadata: Metadata = pageMetadata({
   title: "Consulting — Technology & Project Management",
@@ -39,6 +40,24 @@ export default function ConsultingPage() {
         eyebrow="Consulting"
         title="Technology & Project Management Solutions"
         intro="I help organisations understand, plan and execute technology initiatives — bringing hands-on delivery experience from enterprise infrastructure programmes together with a business and financial lens."
+        aside={
+          <div className="rounded-xl border border-line bg-surface p-6">
+            <p className="text-[13px] font-medium text-muted">Who I work with</p>
+            <ul className="mt-4 space-y-3">
+              {[
+                "IT and infrastructure leaders planning a refresh or migration",
+                "PMOs that need delivery governance people actually use",
+                "Growing organisations making network, SD-WAN or AIOps decisions",
+                "Teams building a business case for technology investment",
+              ].map((t) => (
+                <li key={t} className="flex gap-3 text-[15px] leading-snug text-ink-2">
+                  <Check size={16} className="mt-0.5 shrink-0 text-accent" /> {t}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 border-t border-line pt-4 text-[13.5px] text-muted">Most engagements start with a short discovery session.</p>
+          </div>
+        }
       >
         <div className="flex flex-wrap gap-3">
           <ButtonLink href="#enquire" size="lg" arrow>Discuss your project</ButtonLink>
@@ -71,7 +90,7 @@ export default function ConsultingPage() {
         />
         <div className="grid gap-6 lg:grid-cols-2">
           {consultingServices.map((s, i) => (
-            <article key={s.slug} id={s.slug} className="card scroll-mt-28 p-7 sm:p-8">
+            <Reveal as="article" key={s.slug} id={s.slug} delay={(i % 2) * 80} className="card scroll-mt-28 p-7 sm:p-8">
               <div className="flex items-start justify-between gap-4">
                 <h3 className="text-[21px] font-semibold tracking-tight text-ink">{s.title}</h3>
                 <span className="font-mono text-[12px] text-faint">{String(i + 1).padStart(2, "0")}</span>
@@ -79,13 +98,13 @@ export default function ConsultingPage() {
               <p className="mt-1.5 text-[15px] text-muted">{s.short}</p>
 
               <div className="mt-6 rounded-xl bg-paper px-4 py-3.5">
-                <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-accent-ink">The problem</p>
+                <p className="text-[12.5px] font-medium text-accent-ink">The problem</p>
                 <p className="mt-1.5 text-[14.5px] leading-relaxed text-ink-2">{s.problem}</p>
               </div>
 
               <div className="mt-6 grid gap-6 sm:grid-cols-2">
                 <div>
-                  <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-faint">How I can help</p>
+                  <p className="text-[12.5px] text-faint">How I can help</p>
                   <ul className="mt-2.5 space-y-2">
                     {s.help.map((h) => (
                       <li key={h} className="flex gap-2.5 text-[14.5px] leading-snug text-ink-2">
@@ -95,7 +114,7 @@ export default function ConsultingPage() {
                   </ul>
                 </div>
                 <div>
-                  <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-faint">Typical deliverables</p>
+                  <p className="text-[12.5px] text-faint">Typical deliverables</p>
                   <ul className="mt-2.5 flex flex-wrap gap-1.5">
                     {s.deliverables.map((d) => (
                       <li key={d} className="rounded-md border border-line px-2 py-1 text-[13px] text-ink-3">{d}</li>
@@ -104,12 +123,12 @@ export default function ConsultingPage() {
                 </div>
               </div>
               <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-line pt-5">
-                <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-faint">Engagement</span>
+                <span className="text-[12.5px] text-faint">Engagement</span>
                 {s.engagement.map((e) => (
                   <span key={e} className="rounded-full bg-ink px-2.5 py-0.5 text-[12.5px] text-paper">{e}</span>
                 ))}
               </div>
-            </article>
+            </Reveal>
           ))}
         </div>
       </Section>
@@ -117,7 +136,7 @@ export default function ConsultingPage() {
       {/* Engagement models */}
       <Section>
         <SectionHeader eyebrow="Engagement models" title="Ways to work together" intro="Start small with a discovery session, or bring me in for a defined piece of work." />
-        <ol className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-5">
+        <ol className="grid gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-5">
           {engagementModels.map((m, i) => (
             <li key={m.name} className="bg-surface p-6">
               <span className="font-mono text-[11px] text-accent">0{i + 1}</span>
@@ -166,7 +185,7 @@ export default function ConsultingPage() {
       <Section id="enquire" className="scroll-mt-16">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
           <div>
-            <p className="eyebrow mb-4 flex items-center gap-2"><span className="inline-block h-px w-6 bg-accent" />Discuss your project</p>
+            <p className="eyebrow mb-4">Discuss your project</p>
             <h2 className="display text-[2.2rem] leading-[1.1] text-ink sm:text-[2.6rem]">Tell me about your initiative</h2>
             <p className="mt-5 text-[16.5px] leading-relaxed text-ink-3">
               Share a little context — what you&apos;re trying to achieve, where things are today and any timelines. I&apos;ll reply with a few questions or a suggested next step, usually within two working days.

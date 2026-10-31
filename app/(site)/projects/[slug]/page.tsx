@@ -10,6 +10,9 @@ import { Markdown } from "@/components/markdown";
 import { Badge, ButtonLink, Tag } from "@/components/ui";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, GitHub } from "@/components/icons";
 import { JsonLd } from "@/components/seo/json-ld";
+import { ProjectMeta } from "@/components/cards";
+import { PhoneFrame, ProjectVisual } from "@/components/visuals";
+import { Reveal } from "@/components/motion/reveal";
 import { ContactBand } from "@/components/contact-band";
 import { VideoEmbed } from "@/components/video-embed";
 
@@ -34,18 +37,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
+/** Consulting-style case study structure, mapped onto the existing content fields. */
 const SECTIONS = [
-  ["overview", "Overview"],
-  ["problem", "The problem"],
+  ["overview", "Background"],
+  ["problem", "Business challenge"],
   ["objectives", "Objectives"],
-  ["solution", "Approach & solution"],
-  ["architecture", "Architecture"],
-  ["workflow", "Workflow"],
-  ["implementation", "Implementation"],
-  ["impact", "Results & impact"],
+  ["solution", "Approach"],
+  ["architecture", "Architecture & technology"],
+  ["workflow", "How it works"],
+  ["implementation", "Execution"],
+  ["impact", "Outcomes"],
   ["challenges", "Challenges"],
-  ["lessons", "Lessons learned"],
-  ["future", "Future improvements"],
+  ["lessons", "Key learnings"],
+  ["future", "What's next"],
 ] as const;
 
 export default async function ProjectPage({ params }: Props) {
@@ -80,69 +84,119 @@ export default async function ProjectPage({ params }: Props) {
         ]}
       />
 
-      <header className="border-b border-line">
-        <div className="container-x pb-12 pt-10 sm:pt-14">
-          <Link href="/projects" className="inline-flex items-center gap-2 text-[14px] text-muted hover:text-ink">
-            <ArrowLeft size={15} /> All projects
-          </Link>
-          <div className="mt-8 flex flex-wrap items-center gap-2">
-            <Badge tone="accent">{project.category}</Badge>
-            <Badge>{project.status}</Badge>
-            {project.is_case_study && <Badge tone="ink">Case study</Badge>}
+      <header className="relative overflow-hidden border-b border-line">
+        <div className="grid-lines pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_75%)]" aria-hidden />
+        <div className="container-x relative grid gap-12 pb-14 pt-10 sm:pt-14 lg:grid-cols-[1.25fr_1fr] lg:items-center lg:gap-16 lg:pb-20">
+          <div>
+            <Link href="/projects" className="inline-flex items-center gap-2 text-[14px] text-muted transition-colors hover:text-ink">
+              <ArrowLeft size={15} /> All projects
+            </Link>
+            <div className="mt-8 flex flex-wrap items-center gap-2">
+              {project.is_case_study && <Badge tone="ink">Case study</Badge>}
+              <ProjectMeta project={project} />
+            </div>
+            <h1 className="display mt-5 text-[2.4rem] leading-[1.05] text-ink sm:text-[3.3rem]">{project.title}</h1>
+            <p className="lede mt-6 max-w-2xl">{project.summary}</p>
+            {(project.demo_url || project.github_url) && (
+              <div className="mt-9 flex flex-wrap gap-3">
+                {project.demo_url && (
+                  <ButtonLink href={project.demo_url} size="lg">
+                    Open live app <ArrowUpRight size={15} />
+                  </ButtonLink>
+                )}
+                {project.github_url && (
+                  <ButtonLink href={project.github_url} variant="secondary" size="lg">
+                    <GitHub size={16} /> View source
+                  </ButtonLink>
+                )}
+              </div>
+            )}
           </div>
-          <h1 className="display mt-5 max-w-4xl text-[2.4rem] leading-[1.06] text-ink sm:text-[3.4rem]">{project.title}</h1>
-          <p className="mt-5 max-w-3xl text-[18.5px] leading-relaxed text-ink-3">{project.summary}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            {project.demo_url && <ButtonLink href={project.demo_url}>Live demo <ArrowUpRight size={15} /></ButtonLink>}
-            {project.github_url && (
-              <ButtonLink href={project.github_url} variant="secondary"><GitHub size={16} /> View code</ButtonLink>
+          <div className="relative">
+            {project.slug === "travel-os" ? (
+              <div className="mx-auto w-[64%] max-w-[300px] sm:w-[52%] lg:w-[62%]">
+                <PhoneFrame src="/images/projects/travel-os-welcome.webp" alt="Travel OS welcome screen — India, planned from first idea to last day" priority sizes="300px" />
+              </div>
+            ) : (
+              <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-line">
+                <ProjectVisual project={project} priority />
+              </div>
             )}
           </div>
         </div>
-        {project.cover_image && (
-          <div className="container-x pb-12">
-            <div className="relative aspect-[21/9] overflow-hidden rounded-[24px] border border-line">
-              <Image src={project.cover_image} alt={`${project.title} cover`} fill priority sizes="(min-width: 1200px) 1140px, 100vw" className="object-cover" />
-            </div>
-          </div>
-        )}
+
+        {/* Key facts */}
+        <div className="relative border-t border-line bg-surface/70">
+          <dl className="container-x grid grid-cols-2 gap-x-8 gap-y-5 py-6 sm:grid-cols-4">
+            {[
+              ["My role", project.role],
+              ["Type", project.project_type],
+              ["Year", project.year ? String(project.year) : ""],
+              ["Status", project.status],
+            ]
+              .filter(([, v]) => v)
+              .map(([k, v]) => (
+                <div key={k} className={k === "My role" ? "col-span-2 sm:col-span-1" : ""}>
+                  <dt className="text-[12.5px] text-faint">{k}</dt>
+                  <dd className="mt-1 text-[14.5px] leading-snug text-ink">{v}</dd>
+                </div>
+              ))}
+          </dl>
+        </div>
       </header>
 
-      <div className="container-x grid gap-14 py-16 lg:grid-cols-[1fr_320px] lg:gap-20">
+      <div className="container-x grid gap-14 py-16 sm:py-20 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-16">
         <div className="min-w-0">
           {sections.map(([key, label], i) => (
-            <section key={key} id={key} className="scroll-mt-24 border-b border-line pb-12 pt-2 [&+section]:pt-12 last:border-0">
-              <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.16em] text-accent">{String(i + 1).padStart(2, "0")} · {label}</p>
-              <Markdown>{project[key] as string}</Markdown>
-            </section>
+            <Reveal
+              as="section"
+              key={key}
+              id={key}
+              className="grid gap-3 border-b border-line py-10 first:pt-0 last:border-0 sm:grid-cols-[170px_minmax(0,1fr)] sm:gap-10"
+            >
+              <h2 className="text-[14px] font-semibold text-ink sm:sticky sm:top-24 sm:self-start">
+                <span className="mr-2 font-mono text-[12px] font-normal text-accent">{String(i + 1).padStart(2, "0")}</span>
+                {label}
+              </h2>
+              <Markdown className="prose-compact">{project[key] as string}</Markdown>
+            </Reveal>
           ))}
 
           {project.key_features.length > 0 && (
-            <section className="pt-12">
-              <p className="mb-5 font-mono text-[11px] uppercase tracking-[0.16em] text-accent">Key features</p>
+            <Reveal as="section" className="grid gap-3 border-t border-line pt-10 sm:grid-cols-[170px_minmax(0,1fr)] sm:gap-10">
+              <h2 className="text-[14px] font-semibold text-ink">Capabilities delivered</h2>
               <ul className="grid gap-3 sm:grid-cols-2">
                 {project.key_features.map((f) => (
-                  <li key={f} className="flex gap-3 rounded-xl border border-line bg-surface p-4 text-[15px] text-ink-2">
+                  <li key={f} className="flex gap-3 rounded-lg border border-line bg-surface p-4 text-[15px] leading-snug text-ink-2">
                     <Check size={17} className="mt-0.5 shrink-0 text-accent" /> {f}
                   </li>
                 ))}
               </ul>
-            </section>
+            </Reveal>
+          )}
+
+          {project.technologies.length > 0 && (
+            <Reveal as="section" className="mt-10 grid gap-3 border-t border-line pt-10 sm:grid-cols-[170px_minmax(0,1fr)] sm:gap-10">
+              <h2 className="text-[14px] font-semibold text-ink">Technology involved</h2>
+              <div className="flex flex-wrap gap-2">
+                {project.technologies.map((t) => <Tag key={t}>{t}</Tag>)}
+              </div>
+            </Reveal>
           )}
 
           {video?.embedUrl && (
-            <section className="pt-12">
-              <p className="mb-5 font-mono text-[11px] uppercase tracking-[0.16em] text-accent">Demo</p>
+            <section className="mt-10 border-t border-line pt-10">
+              <h2 className="mb-5 text-[14px] font-semibold text-ink">Demo</h2>
               <VideoEmbed embedUrl={video.embedUrl} thumbnail={video.thumbnail} title={`${project.title} demo`} />
             </section>
           )}
 
           {project.screenshots.length > 0 && (
-            <section className="pt-12">
-              <p className="mb-5 font-mono text-[11px] uppercase tracking-[0.16em] text-accent">Screenshots</p>
+            <section className="mt-10 border-t border-line pt-10">
+              <h2 className="mb-5 text-[14px] font-semibold text-ink">Screenshots</h2>
               <div className="grid gap-4 sm:grid-cols-2">
                 {project.screenshots.map((src, i) => (
-                  <a key={src} href={src} target="_blank" rel="noopener noreferrer" className="relative block aspect-[16/10] overflow-hidden rounded-xl border border-line bg-surface">
+                  <a key={src} href={src} target="_blank" rel="noopener noreferrer" className="relative block aspect-[16/10] overflow-hidden rounded-lg border border-line bg-surface">
                     <Image src={src} alt={`${project.title} screenshot ${i + 1}`} fill sizes="(min-width: 1024px) 400px, 100vw" className="object-cover" />
                   </a>
                 ))}
@@ -151,44 +205,23 @@ export default async function ProjectPage({ params }: Props) {
           )}
         </div>
 
-        <aside className="lg:pt-2">
-          <div className="sticky top-24 space-y-6">
-            <dl className="card divide-y divide-line">
-              {[
-                ["My role", project.role],
-                ["Type", project.project_type],
-                ["Year", project.year ? String(project.year) : ""],
-                ["Status", project.status],
-              ]
-                .filter(([, v]) => v)
-                .map(([k, v]) => (
-                  <div key={k} className="px-5 py-3.5">
-                    <dt className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-faint">{k}</dt>
-                    <dd className="mt-1 text-[15px] text-ink">{v}</dd>
-                  </div>
-                ))}
-              {project.technologies.length > 0 && (
-                <div className="px-5 py-4">
-                  <dt className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-faint">Technology stack</dt>
-                  <dd className="mt-2.5 flex flex-wrap gap-1.5">
-                    {project.technologies.map((t) => <Tag key={t}>{t}</Tag>)}
-                  </dd>
-                </div>
-              )}
-            </dl>
+        <aside className="hidden lg:block">
+          <div className="sticky top-24 space-y-8">
             {sections.length > 3 && (
-              <nav aria-label="On this page" className="hidden lg:block">
-                <p className="eyebrow mb-3">On this page</p>
-                <ul className="space-y-1.5 border-l border-line">
+              <nav aria-label="On this page">
+                <p className="mb-3 text-[13px] font-medium text-muted">On this page</p>
+                <ul className="space-y-1 border-l border-line">
                   {sections.map(([key, label]) => (
                     <li key={key}>
-                      <a href={`#${key}`} className="-ml-px block border-l border-transparent pl-4 text-[14px] text-muted hover:border-ink hover:text-ink">{label}</a>
+                      <a href={`#${key}`} className="-ml-px block border-l border-transparent py-0.5 pl-4 text-[13.5px] text-muted transition-colors hover:border-ink hover:text-ink">
+                        {label}
+                      </a>
                     </li>
                   ))}
                 </ul>
               </nav>
             )}
-            <div className="rounded-2xl bg-ink p-6 text-paper">
+            <div className="rounded-xl bg-night p-6 text-paper">
               <p className="text-[16px] font-medium">Facing a similar challenge?</p>
               <p className="mt-1.5 text-[14px] text-paper/65">I&apos;m happy to compare notes.</p>
               <ButtonLink href="/consulting#enquire" variant="light" size="sm" className="mt-4" arrow>Discuss your project</ButtonLink>
@@ -198,11 +231,11 @@ export default async function ProjectPage({ params }: Props) {
       </div>
 
       {next && next.slug !== project.slug && (
-        <div className="border-t border-line">
-          <Link href={`/projects/${next.slug}`} className="container-x group flex items-center justify-between gap-6 py-10">
+        <div className="border-t border-line bg-surface">
+          <Link href={`/projects/${next.slug}`} className="container-x group flex items-center justify-between gap-6 py-12">
             <span>
-              <span className="eyebrow">Next project</span>
-              <span className="mt-2 block text-[22px] font-semibold tracking-tight text-ink group-hover:text-accent-ink">{next.title}</span>
+              <span className="text-[13px] font-medium text-muted">Next project</span>
+              <span className="display mt-2 block text-[1.8rem] leading-tight text-ink transition-colors group-hover:text-accent-ink">{next.title}</span>
             </span>
             <ArrowRight size={22} className="shrink-0 transition-transform group-hover:translate-x-1" />
           </Link>

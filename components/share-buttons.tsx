@@ -10,7 +10,7 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
   const btn = "grid h-9 w-9 place-items-center rounded-full border border-line-strong text-ink-3 transition-colors hover:border-ink hover:text-ink";
   return (
     <div className="flex items-center gap-2">
-      <span className="eyebrow mr-1">Share</span>
+      <span className="mr-1 text-[13px] font-medium text-muted">Share</span>
       <a className={btn} href={`https://www.linkedin.com/sharing/share-offsite/?url=${u}`} target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn">
         <LinkedIn size={15} />
       </a>

@@ -51,20 +51,22 @@ export const hubNav: NavItem[] = [
   { label: "Blog", href: "/blog", description: "Latest writing, newest first" },
   { label: "Vlogs", href: "/vlogs", description: "Videos, build logs and career talks" },
   { label: "Case Studies", href: "/case-studies", description: "How real programmes were run" },
+  { label: "Resources", href: "/resources", description: "Templates, checklists and reports to download" },
 ];
 
 export const footerNav: { heading: string; items: NavItem[] }[] = [
   {
-    heading: "Explore",
+    heading: "Work",
     items: [
       { label: "About", href: "/about" },
       { label: "Projects", href: "/projects" },
       { label: "Case Studies", href: "/case-studies" },
+      { label: "Travel OS", href: "/projects/travel-os" },
       { label: "Resume", href: "/resume" },
     ],
   },
   {
-    heading: "Learn",
+    heading: "Insights",
     items: [
       { label: "Tech Hub", href: "/hub" },
       { label: "Blog", href: "/blog" },
